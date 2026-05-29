@@ -1,0 +1,15 @@
+{
+  "_comment": "Sweepstake draw: maps each person to their 4 teams. Names not yet drawn, so 'Person 1'..'Person 12' are placeholders. Team names must exactly match those in groups.json. After the real draw, just edit the names and/or reshuffle the teams here — the site updates automatically.",
+  "Person 1": ["Mexico", "United States", "Belgium", "Argentina"],
+  "Person 2": ["South Africa", "Paraguay", "Egypt", "Algeria"],
+  "Person 3": ["South Korea", "Australia", "Iran", "Austria"],
+  "Person 4": ["Czech Republic", "Turkey", "New Zealand", "Jordan"],
+  "Person 5": ["Canada", "Germany", "Spain", "Portugal"],
+  "Person 6": ["Bosnia and Herzegovina", "Curaçao", "Cape Verde", "DR Congo"],
+  "Person 7": ["Qatar", "Ivory Coast", "Saudi Arabia", "Uzbekistan"],
+  "Person 8": ["Switzerland", "Ecuador", "Uruguay", "Colombia"],
+  "Person 9": ["Brazil", "Netherlands", "France", "England"],
+  "Person 10": ["Morocco", "Japan", "Senegal", "Croatia"],
+  "Person 11": ["Haiti", "Sweden", "Iraq", "Ghana"],
+  "Person 12": ["Scotland", "Tunisia", "Norway", "Panama"]
+}

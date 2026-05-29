@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>World Cup 2026 Sweepstake</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <h1>🏆 World Cup 2026 Sweepstake</h1>
+      <p class="tagline">12 players · 48 teams · 12 groups · Canada / Mexico / USA</p>
+    </div>
+  </header>
+
+  <nav class="tabs wrap" role="tablist">
+    <button class="tab is-active" data-view="groups" role="tab">Group stage</button>
+    <button class="tab" data-view="knockout" role="tab">Knockout</button>
+    <button class="tab" data-view="players" role="tab">Players</button>
+  </nav>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <input id="search" type="search" placeholder="Filter by team or player…" autocomplete="off" />
+      <div id="legend" class="legend"></div>
+    </div>
+    <p id="status" class="status"></p>
+
+    <section id="view-groups" class="view"></section>
+    <section id="view-knockout" class="view" hidden></section>
+    <section id="view-players" class="view" hidden></section>
+  </main>
+
+  <footer class="site-footer wrap">
+    <p>Scores auto-update via a scheduled GitHub Action writing to <code>data/matches.json</code>.
+      Player–team assignments live in <code>data/assignments.json</code>. Top 2 of each group qualify
+      (plus the 8 best third-placed teams); standings use points, then goal difference, then goals scored.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

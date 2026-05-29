@@ -1,0 +1,74 @@
+{
+  "A": [
+    { "name": "Mexico", "flag": "🇲🇽" },
+    { "name": "South Africa", "flag": "🇿🇦" },
+    { "name": "South Korea", "flag": "🇰🇷" },
+    { "name": "Czech Republic", "flag": "🇨🇿" }
+  ],
+  "B": [
+    { "name": "Canada", "flag": "🇨🇦" },
+    { "name": "Bosnia and Herzegovina", "flag": "🇧🇦" },
+    { "name": "Qatar", "flag": "🇶🇦" },
+    { "name": "Switzerland", "flag": "🇨🇭" }
+  ],
+  "C": [
+    { "name": "Brazil", "flag": "🇧🇷" },
+    { "name": "Morocco", "flag": "🇲🇦" },
+    { "name": "Haiti", "flag": "🇭🇹" },
+    { "name": "Scotland", "flag": "🏴󠁧󠁢󠁳󠁣󠁴󠁿" }
+  ],
+  "D": [
+    { "name": "United States", "flag": "🇺🇸" },
+    { "name": "Paraguay", "flag": "🇵🇾" },
+    { "name": "Australia", "flag": "🇦🇺" },
+    { "name": "Turkey", "flag": "🇹🇷" }
+  ],
+  "E": [
+    { "name": "Germany", "flag": "🇩🇪" },
+    { "name": "Curaçao", "flag": "🇨🇼" },
+    { "name": "Ivory Coast", "flag": "🇨🇮" },
+    { "name": "Ecuador", "flag": "🇪🇨" }
+  ],
+  "F": [
+    { "name": "Netherlands", "flag": "🇳🇱" },
+    { "name": "Japan", "flag": "🇯🇵" },
+    { "name": "Sweden", "flag": "🇸🇪" },
+    { "name": "Tunisia", "flag": "🇹🇳" }
+  ],
+  "G": [
+    { "name": "Belgium", "flag": "🇧🇪" },
+    { "name": "Egypt", "flag": "🇪🇬" },
+    { "name": "Iran", "flag": "🇮🇷" },
+    { "name": "New Zealand", "flag": "🇳🇿" }
+  ],
+  "H": [
+    { "name": "Spain", "flag": "🇪🇸" },
+    { "name": "Cape Verde", "flag": "🇨🇻" },
+    { "name": "Saudi Arabia", "flag": "🇸🇦" },
+    { "name": "Uruguay", "flag": "🇺🇾" }
+  ],
+  "I": [
+    { "name": "France", "flag": "🇫🇷" },
+    { "name": "Senegal", "flag": "🇸🇳" },
+    { "name": "Iraq", "flag": "🇮🇶" },
+    { "name": "Norway", "flag": "🇳🇴" }
+  ],
+  "J": [
+    { "name": "Argentina", "flag": "🇦🇷" },
+    { "name": "Algeria", "flag": "🇩🇿" },
+    { "name": "Austria", "flag": "🇦🇹" },
+    { "name": "Jordan", "flag": "🇯🇴" }
+  ],
+  "K": [
+    { "name": "Portugal", "flag": "🇵🇹" },
+    { "name": "DR Congo", "flag": "🇨🇩" },
+    { "name": "Uzbekistan", "flag": "🇺🇿" },
+    { "name": "Colombia", "flag": "🇨🇴" }
+  ],
+  "L": [
+    { "name": "England", "flag": "🏴󠁧󠁢󠁥󠁮󠁧󠁿" },
+    { "name": "Croatia", "flag": "🇭🇷" },
+    { "name": "Ghana", "flag": "🇬🇭" },
+    { "name": "Panama", "flag": "🇵🇦" }
+  ]
+}
