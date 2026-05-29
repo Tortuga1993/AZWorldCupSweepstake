@@ -1,15 +1,75 @@
 {
   "_comment": "Sweepstake draw: maps each person to their 4 teams. Names not yet drawn, so 'Person 1'..'Person 12' are placeholders. Team names must exactly match those in groups.json. After the real draw, just edit the names and/or reshuffle the teams here — the site updates automatically.",
-  "Lordy": ["Mexico", "United States", "Belgium", "Argentina"],
-  "Adair": ["South Africa", "Paraguay", "Egypt", "Algeria"],
-  "George": ["South Korea", "Australia", "Iran", "Austria"],
-  "Glen": ["Czech Republic", "Turkey", "New Zealand", "Jordan"],
-  "Hoggard": ["Canada", "Germany", "Spain", "Portugal"],
-  "Robbo": ["Bosnia and Herzegovina", "Curaçao", "Cape Verde", "DR Congo"],
-  "Sadegh": ["Qatar", "Ivory Coast", "Saudi Arabia", "Uzbekistan"],
-  "Liam": ["Switzerland", "Ecuador", "Uruguay", "Colombia"],
-  "Ash": ["Brazil", "Netherlands", "France", "England"],
-  "Our Lew": ["Morocco", "Japan", "Senegal", "Croatia"],
-  "Romeen": ["Haiti", "Sweden", "Iraq", "Ghana"],
-  "Hatton": ["Scotland", "Tunisia", "Norway", "Panama"]
+  "Lordy": [
+    "Curaçao",
+    "Panama",
+    "Australia",
+    "South Africa"
+  ],
+  "Adair": [
+    "Paraguay",
+    "Ghana",
+    "Czech Republic",
+    "Haiti"
+  ],
+  "George": [
+    "Ivory Coast",
+    "England",
+    "Scotland",
+    "Uruguay"
+  ],
+  "Glen": [
+    "France",
+    "Portugal",
+    "Mexico",
+    "South Korea"
+  ],
+  "Hoggard": [
+    "New Zealand",
+    "Qatar",
+    "Turkey",
+    "Bosnia and Herzegovina"
+  ],
+  "Robbo": [
+    "United States",
+    "Croatia",
+    "Jordan",
+    "Austria"
+  ],
+  "Sadegh": [
+    "Sweden",
+    "Netherlands",
+    "DR Congo",
+    "Uzbekistan"
+  ],
+  "Liam": [
+    "Brazil",
+    "Spain",
+    "Germany",
+    "Saudi Arabia"
+  ],
+  "Ash": [
+    "Tunisia",
+    "Belgium",
+    "Argentina",
+    "Morocco"
+  ],
+  "Our Lew": [
+    "Iran",
+    "Ecuador",
+    "Senegal",
+    "Norway"
+  ],
+  "Romeen": [
+    "Algeria",
+    "Japan",
+    "Switzerland",
+    "Colombia"
+  ],
+  "Hatton": [
+    "Canada",
+    "Cape Verde",
+    "Iraq",
+    "Egypt"
+  ]
 }
