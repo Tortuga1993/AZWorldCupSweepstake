@@ -19,6 +19,7 @@ const ALIASES = {
   "türkiye": "turkey",
   "turkiye": "turkey",
   "cabo verde": "cape verde",
+  "cape verde islands": "cape verde",
   "congo dr": "dr congo",
   "dr congo": "dr congo",
   "bosnia-herzegovina": "bosnia and herzegovina",
@@ -87,6 +88,23 @@ function buildIndexes() {
 function hexA(hex, a) {
   const n = parseInt(hex.slice(1), 16);
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
+}
+
+// Decimal odds -> tidy fractional odds, e.g. 1.5 -> "1/2", 7 -> "6/1", 2.75 -> "7/4".
+// Uses a best rational approximation with a small denominator (bookmaker style).
+function toFraction(dec) {
+  if (!(dec > 1)) return "—";
+  const x = dec - 1;
+  let bestN = 1, bestD = 1, bestErr = Infinity;
+  for (let d = 1; d <= 20; d++) {
+    const n = Math.round(x * d);
+    if (n <= 0) continue;
+    const err = Math.abs(x - n / d);
+    if (err < bestErr - 1e-9) { bestErr = err; bestN = n; bestD = d; }
+  }
+  const gcd = (a, b) => { while (b) { [a, b] = [b, a % b]; } return a || 1; };
+  const g = gcd(bestN, bestD);
+  return `${bestN / g}/${bestD / g}`;
 }
 
 function ownerChip(team) {
@@ -212,17 +230,17 @@ function renderNextMatch() {
   };
   const fh = randFact(hn), fa = randFact(an);
   const factsHtml = (fh || fa) ? `<div class="nm-facts">
-    ${fh ? `<p><span class="ff">${h ? h.flag : "🏳️"}</span><b>${hn}</b> ${fh}</p>` : ""}
-    ${fa ? `<p><span class="ff">${a ? a.flag : "🏳️"}</span><b>${an}</b> ${fa}</p>` : ""}
+    ${fh ? `<p title="${hn}: ${fh}"><span class="ff">${h ? h.flag : "🏳️"}</span><b>${hn}</b> ${fh}</p>` : ""}
+    ${fa ? `<p title="${an}: ${fa}"><span class="ff">${a ? a.flag : "🏳️"}</span><b>${an}</b> ${fa}</p>` : ""}
   </div>` : "";
 
   // 1X2 match odds, shown only when football-data supplied them.
   const o = m.odds;
   const oddsHtml = o && typeof o.home === "number"
     ? `<div class="nm-odds" title="Match odds (home / draw / away)">
-         <span class="odd"><b>1</b> ${o.home.toFixed(2)}</span>
-         <span class="odd"><b>X</b> ${o.draw.toFixed(2)}</span>
-         <span class="odd"><b>2</b> ${o.away.toFixed(2)}</span>
+         <span class="odd"><b>1</b> ${toFraction(o.home)}</span>
+         <span class="odd"><b>X</b> ${toFraction(o.draw)}</span>
+         <span class="odd"><b>2</b> ${toFraction(o.away)}</span>
        </div>`
     : "";
 
@@ -449,7 +467,7 @@ function renderOdds() {
         <div class="odds-top">
           <span class="orank">${i + 1}</span>
           <span class="oname">${pl.name}</span>
-          <span class="opct">${(pl.p * 100).toFixed(1)}%${pl.p > 0 ? `<span class="ofair">≈ ${(1 / pl.p).toFixed(1)}/1</span>` : ""}</span>
+          <span class="opct">${(pl.p * 100).toFixed(1)}%${pl.p > 0 ? `<span class="ofair">≈ ${toFraction(1 / pl.p)}</span>` : ""}</span>
         </div>
         <div class="obar"><span style="width:${(pl.p / max * 100).toFixed(1)}%;background:${c}"></span></div>
         <div class="oteams">${
