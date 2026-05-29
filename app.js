@@ -30,6 +30,7 @@ const state = {
   groups: {},          // { A: [{name, flag}], ... }
   assignments: {},     // { "Person 1": [team, ...], ... }
   matches: [],         // normalised match objects
+  odds: {},            // { team: decimalOdds }
   updated: null,
   ownerOf: {},         // team name -> player name
   colorOf: {},         // player name -> colour
@@ -387,6 +388,54 @@ function renderPlayers(standings) {
   }</div>`;
 }
 
+// Each player's pooled chance of owning the World Cup winner, from outright odds.
+function renderOdds() {
+  const el = document.getElementById("view-odds");
+  const flagOf = {};
+  for (const teams of Object.values(state.groups)) for (const t of teams) flagOf[t.name] = t.flag;
+
+  // Implied probabilities (1/odds), normalised across all priced teams.
+  const raw = {}; let total = 0;
+  for (const [t, o] of Object.entries(state.odds)) {
+    if (t.startsWith("_") || !(o > 0)) continue;
+    raw[t] = 1 / o; total += raw[t];
+  }
+  if (!total) {
+    el.innerHTML = `<p class="empty">Add outright odds to <code>data/odds.json</code> to see each player's chance of winning.</p>`;
+    return;
+  }
+  const prob = {};
+  for (const t in raw) prob[t] = raw[t] / total;
+
+  const players = Object.keys(state.assignments).filter((k) => !k.startsWith("_"));
+  const rows = players.map((name) => {
+    const breakdown = state.assignments[name]
+      .map((t) => ({ t, p: prob[t] || 0 }))
+      .sort((a, b) => b.p - a.p);
+    return { name, p: breakdown.reduce((s, x) => s + x.p, 0), breakdown };
+  }).sort((a, b) => b.p - a.p);
+
+  const max = rows[0].p || 1;
+  el.innerHTML = `<div class="odds-board">${
+    rows.map((pl, i) => {
+      const c = state.colorOf[pl.name];
+      return `
+      <div class="odds-row r${i + 1}" data-player="${pl.name}">
+        <div class="odds-top">
+          <span class="orank">${i + 1}</span>
+          <span class="oname">${pl.name}</span>
+          <span class="opct">${(pl.p * 100).toFixed(1)}%${pl.p > 0 ? `<span class="ofair">≈ ${(1 / pl.p).toFixed(1)}/1</span>` : ""}</span>
+        </div>
+        <div class="obar"><span style="width:${(pl.p / max * 100).toFixed(1)}%;background:${c}"></span></div>
+        <div class="oteams">${
+          pl.breakdown.map((x) => `<span class="oteam"><span class="ofl">${flagOf[x.t] || "🏳️"}</span>${x.t}<span class="otp">${(x.p * 100).toFixed(1)}%</span></span>`).join("")
+        }</div>
+      </div>`;
+    }).join("")
+  }</div>
+  <p class="odds-note">Implied from decimal outright odds in <code>data/odds.json</code> (1 ÷ odds), normalised across all priced teams, then summed per player — the percentages add up to 100%.</p>`;
+}
+
 function renderLegend(players) {
   document.getElementById("legend").innerHTML = players.map((p) => {
     const c = state.colorOf[p];
@@ -440,7 +489,7 @@ function wireEvents() {
       document.querySelectorAll(".tab").forEach((t) => t.classList.remove("is-active"));
       tab.classList.add("is-active");
       const view = tab.dataset.view;
-      for (const v of ["groups", "fixtures", "knockout", "players"]) {
+      for (const v of ["groups", "fixtures", "knockout", "players", "odds"]) {
         document.getElementById(`view-${v}`).hidden = v !== view;
       }
     });
@@ -458,15 +507,17 @@ function wireEvents() {
 
 async function init() {
   try {
-    const [groups, assignments, matchData] = await Promise.all([
+    const [groups, assignments, matchData, oddsData] = await Promise.all([
       loadJSON("data/groups.json"),
       loadJSON("data/assignments.json"),
       loadJSON("data/matches.json").catch(() => ({ matches: [], updated: null })),
+      loadJSON("data/odds.json").catch(() => ({})),
     ]);
     state.groups = groups;
     state.assignments = assignments;
     state.matches = matchData.matches || [];
     state.updated = matchData.updated || null;
+    state.odds = oddsData || {};
 
     const players = buildIndexes();
     const standings = computeStandings();
@@ -475,6 +526,7 @@ async function init() {
     renderGroups(standings);
     renderKnockout();
     renderPlayers(standings);
+    renderOdds();
     renderLegend(players);
     renderStatus();
     wireEvents();

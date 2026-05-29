@@ -325,6 +325,35 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
   background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 12px;
 }
 
+/* Odds tab */
+.odds-board { display: flex; flex-direction: column; gap: 10px; max-width: 620px; margin: 0 auto; }
+.odds-row {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
+  padding: 13px 15px; box-shadow: var(--shadow);
+}
+.odds-top { display: flex; align-items: center; gap: 11px; }
+.orank {
+  font-family: var(--font-head); font-weight: 700; font-size: 1.02rem; width: 1.7em;
+  text-align: center; color: var(--muted); flex: none;
+}
+.odds-row.r1 .orank { color: #fbbf24; }
+.odds-row.r2 .orank { color: #cbd5e1; }
+.odds-row.r3 .orank { color: #d6843c; }
+.oname { font-weight: 700; font-size: 1.02rem; flex: 1 1 auto; }
+.opct { font-family: var(--font-head); font-weight: 700; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+.ofair { color: var(--muted); font-size: 0.7rem; font-weight: 600; margin-left: 6px; }
+.obar { height: 8px; border-radius: 999px; background: var(--panel-2); margin: 10px 0 11px; overflow: hidden; }
+.obar > span { display: block; height: 100%; border-radius: 999px; }
+.oteams { display: flex; flex-wrap: wrap; gap: 6px; }
+.oteam {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600;
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: 999px; padding: 3px 9px;
+}
+.oteam .ofl { font-size: 1rem; }
+.oteam .otp { color: var(--muted); font-variant-numeric: tabular-nums; }
+.odds-note { color: var(--muted); font-size: 0.8rem; text-align: center; max-width: 620px; margin: 18px auto 0; }
+.odds-note code { background: var(--panel); padding: 2px 6px; border-radius: 6px; }
+
 /* Players leaderboard */
 .players .rank {
   display: inline-block; min-width: 1.4em; text-align: center; color: var(--muted); font-weight: 800; margin-right: 4px;
