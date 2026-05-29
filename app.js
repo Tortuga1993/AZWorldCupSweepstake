@@ -123,16 +123,32 @@ function computeStandings() {
   return sorted;
 }
 
-// Set of teams not yet eliminated (top-2 projection + knockout survival).
+// Set of teams not yet eliminated. Teams stay alive until they are *genuinely*
+// out — we never project eliminations from an unfinished (e.g. all-0-0) table.
 function aliveSet(standings) {
   const alive = new Set();
-  for (const arr of Object.values(standings)) arr.slice(0, 2).forEach((t) => alive.add(t.name));
+  for (const arr of Object.values(standings)) for (const t of arr) alive.add(t.name);
+
   const ko = state.matches.filter((m) => !isGroupStage(m));
+  const koTeams = new Set();
   for (const m of ko) {
     const h = resolveRoster(m.home), a = resolveRoster(m.away);
-    if (h) alive.add(h.name);
-    if (a) alive.add(a.name);
+    if (h) koTeams.add(h.name);
+    if (a) koTeams.add(a.name);
   }
+  const koExists = ko.length > 0;
+
+  // Group eliminations only once every team in the group has played all 3 games.
+  for (const arr of Object.values(standings)) {
+    if (!arr.every((t) => t.P >= 3)) continue;
+    arr.forEach((t, i) => {
+      const pos = i + 1;
+      if (pos === 4) alive.delete(t.name);                                   // 4th can never advance
+      else if (pos === 3 && koExists && !koTeams.has(t.name)) alive.delete(t.name); // 3rd that missed the cut
+    });
+  }
+
+  // Knockout losers are out.
   for (const m of ko) {
     if (m.status !== "FINISHED") continue;
     const h = resolveRoster(m.home), a = resolveRoster(m.away);

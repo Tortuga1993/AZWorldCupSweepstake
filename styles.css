@@ -66,7 +66,7 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
 .wrap { width: min(1100px, 92vw); margin: 0 auto; }
 
 .site-header { padding: 32px 0 18px; text-align: center; }
-.site-header h1 { margin: 0; font-size: clamp(1.7rem, 4.2vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; }
+.site-header h1 { margin: 0; font-size: clamp(1.3rem, 5.2vw, 2.6rem); font-weight: 700; letter-spacing: -0.02em; }
 .tagline { color: var(--muted); margin: 6px 0 0; }
 
 .prizes { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
@@ -105,12 +105,18 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
   background: var(--panel);
   color: var(--muted);
   border: 1px solid var(--border);
-  padding: 10px 18px;
+  padding: 9px 16px;
   border-radius: 999px;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   transition: all 0.15s ease;
+}
+
+/* On phones, shrink the tabs and split the row evenly so all four fit. */
+@media (max-width: 520px) {
+  .tabs { gap: 6px; flex-wrap: nowrap; }
+  .tab { flex: 1 1 0; padding: 8px 4px; font-size: 0.78rem; text-align: center; white-space: nowrap; }
 }
 .tab:hover { color: var(--text); }
 .tab.is-active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
