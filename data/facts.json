@@ -1,0 +1,69 @@
+{
+  "_comment": "Obscure/fun fact(s) per country, shown in the Next match ticker. Each value is an ARRAY — add more and one is picked at random. Keys must match team names in groups.json.",
+  "Mexico": ["Mexico City is sinking up to 50cm a year — it's built on a drained lake bed."],
+  "South Africa": ["It has three capital cities: Pretoria, Cape Town and Bloemfontein."],
+  "South Korea": ["Many buildings skip the 4th floor — the word for 'four' sounds like 'death'."],
+  "Czech Republic": ["Drinks more beer per person than any country on Earth — and it's not close."],
+  "Canada": ["Has more lakes than the rest of the world combined."],
+  "Bosnia and Herzegovina": ["Home to Perućica, one of the last primeval forests in Europe."],
+  "Qatar": ["Before oil and gas, its economy ran largely on pearl diving."],
+  "Switzerland": ["It's illegal to keep just one guinea pig — they're considered too social to be alone."],
+  "Brazil": [
+    "So vast it borders every South American country except Chile and Ecuador.",
+    "There's a Brazilian town, Americana, founded by Confederates fleeing the US."
+  ],
+  "Morocco": ["Goats there climb argan trees to eat the fruit — and locals let them."],
+  "Haiti": ["The only nation in history founded by a successful slave revolt."],
+  "Scotland": ["Its official national animal is the unicorn."],
+  "United States": [
+    "It has no official national language at the federal level.",
+    "The national mammal is the bison, only made official in 2016."
+  ],
+  "Paraguay": ["Famously, duelling is technically legal — if both parties are registered blood donors."],
+  "Australia": ["Home to the world's longest fence: the 5,600km dingo fence."],
+  "Turkey": ["Istanbul is the only major city that sits on two continents at once."],
+  "Germany": [
+    "There's still no general speed limit on much of the autobahn.",
+    "Has over 1,500 different kinds of sausage."
+  ],
+  "Curaçao": ["Its capital harbour has a floating pedestrian bridge that swings open for ships."],
+  "Ivory Coast": ["Home to the largest church in the world — bigger than St Peter's in Rome."],
+  "Ecuador": ["You weigh very slightly less standing on its equator than at the poles."],
+  "Netherlands": ["Roughly a third of the country sits below sea level."],
+  "Japan": ["Has around 5 million vending machines — one for every 23 people."],
+  "Sweden": ["Recycles so efficiently it imports rubbish from abroad to fuel its plants."],
+  "Tunisia": ["Star Wars' planet Tatooine was filmed here — and named after a real town."],
+  "Belgium": ["Once went 589 days without a government and barely noticed."],
+  "Egypt": ["The Great Pyramid was the tallest structure on Earth for nearly 3,800 years."],
+  "Iran": ["Has a 2,500-year-old imperial pedigree and one of the oldest wine traditions known."],
+  "New Zealand": ["Has roughly five sheep for every single person."],
+  "Spain": ["Home to the world's oldest restaurant still running — open since 1725."],
+  "Cape Verde": ["Made up of 10 islands, but people live on only 9 of them."],
+  "Saudi Arabia": ["Despite the desert, it actually imports sand for construction."],
+  "Uruguay": ["The first country in the world to give every schoolchild a free laptop."],
+  "France": [
+    "Has the most time zones of any country — 12 — thanks to overseas territories.",
+    "By law you could, until recently, marry a dead person."
+  ],
+  "Senegal": ["Home to Lake Retba, a bright pink lake coloured by salt-loving algae."],
+  "Iraq": ["Often called the cradle of civilisation — writing itself was invented here."],
+  "Norway": ["Has formally knighted a king penguin in its army — Sir Nils Olav."],
+  "Argentina": [
+    "Buenos Aires has the world's widest avenue, the 9 de Julio.",
+    "It's home to both the highest and lowest points in the southern hemisphere."
+  ],
+  "Algeria": ["Africa's largest country — about 80% of it is Sahara desert."],
+  "Austria": ["The croissant was likely invented in Vienna, not Paris."],
+  "Jordan": ["The lost city of Petra was unknown to the West until 1812."],
+  "Portugal": ["Produces about half the world's cork."],
+  "DR Congo": ["The Congo is the world's deepest river — over 220m in places."],
+  "Uzbekistan": ["One of only two 'doubly landlocked' countries on the planet."],
+  "Colombia": ["The only place the wax palm grows — the tallest palm tree in the world."],
+  "England": [
+    "Has no single written constitution.",
+    "The world's oldest surviving clock still ticking is in Salisbury Cathedral."
+  ],
+  "Croatia": ["The necktie was born here — 'cravat' comes from 'Croat'."],
+  "Ghana": ["Famous for fantasy coffins — shaped like fish, shoes, cars, anything."],
+  "Panama": ["Thanks to the canal's bends, you can watch the sun rise on the Pacific and set on the Atlantic."]
+}

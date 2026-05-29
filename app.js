@@ -31,6 +31,8 @@ const state = {
   assignments: {},     // { "Person 1": [team, ...], ... }
   matches: [],         // normalised match objects
   odds: {},            // { team: decimalOdds }
+  scorers: [],         // [{ player, team, goals, assists }]
+  facts: {},           // { country: [fact, ...] }
   updated: null,
   ownerOf: {},         // team name -> player name
   colorOf: {},         // player name -> colour
@@ -203,6 +205,27 @@ function renderNextMatch() {
     ? `<span class="nm-score">${m.homeScore}–${m.awayScore}</span>`
     : `<span class="nm-vs">v</span>`;
 
+  // Obscure fact for each country (picked at random from data/facts.json).
+  const randFact = (name) => {
+    const arr = state.facts[name];
+    return Array.isArray(arr) && arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
+  };
+  const fh = randFact(hn), fa = randFact(an);
+  const factsHtml = (fh || fa) ? `<div class="nm-facts">
+    ${fh ? `<p><span class="ff">${h ? h.flag : "🏳️"}</span><b>${hn}</b> ${fh}</p>` : ""}
+    ${fa ? `<p><span class="ff">${a ? a.flag : "🏳️"}</span><b>${an}</b> ${fa}</p>` : ""}
+  </div>` : "";
+
+  // 1X2 match odds, shown only when football-data supplied them.
+  const o = m.odds;
+  const oddsHtml = o && typeof o.home === "number"
+    ? `<div class="nm-odds" title="Match odds (home / draw / away)">
+         <span class="odd"><b>1</b> ${o.home.toFixed(2)}</span>
+         <span class="odd"><b>X</b> ${o.draw.toFixed(2)}</span>
+         <span class="odd"><b>2</b> ${o.away.toFixed(2)}</span>
+       </div>`
+    : "";
+
   el.innerHTML = `
     <div class="nm-head"><span class="nm-label">${label}</span><span class="nm-ctx">${matchContext(m)}</span></div>
     <div class="nm-teams">
@@ -218,7 +241,9 @@ function renderNextMatch() {
         ${ownerChip(an)}
       </div>
     </div>
-    <div class="nm-kickoff">🗓️ ${fmtDateFull(m.utcDate)}</div>`;
+    <div class="nm-kickoff">🗓️ ${fmtDateFull(m.utcDate)}</div>
+    ${oddsHtml}
+    ${factsHtml}`;
 }
 
 function fixtureRow(m) {
@@ -436,6 +461,38 @@ function renderOdds() {
   <p class="odds-note">Implied from decimal outright odds in <code>data/odds.json</code> (1 ÷ odds), normalised across all priced teams, then summed per player — the percentages add up to 100%.</p>`;
 }
 
+// Tournament top scorers: player, the country they play for, goals, and team owner.
+function renderScorers() {
+  const el = document.getElementById("view-scorers");
+  const list = state.scorers || [];
+  if (!list.length) {
+    el.innerHTML = `<p class="empty">Top scorers will appear here once goals start going in.</p>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="table-scroll">
+      <table class="scorers">
+        <thead><tr><th class="pos">#</th><th>Player</th><th>Country</th><th class="c">Goals</th><th>Owner</th></tr></thead>
+        <tbody>${
+          list.map((s, i) => {
+            const r = resolveRoster(s.team);
+            const country = r ? r.name : (s.team || "—");
+            const flag = r ? r.flag : "🏳️";
+            const owner = r ? state.ownerOf[r.name] : null;
+            return `
+            <tr class="scorer-row" data-team="${country}" data-player="${owner || ""}">
+              <td class="pos">${i + 1}</td>
+              <td class="pl">${s.player}</td>
+              <td class="ct"><span class="flag">${flag}</span><span class="ctn">${country}</span></td>
+              <td class="c g">${s.goals}</td>
+              <td>${owner ? ownerChip(r.name) : '<span class="owner muted">—</span>'}</td>
+            </tr>`;
+          }).join("")
+        }</tbody>
+      </table>
+    </div>`;
+}
+
 function renderLegend(players) {
   document.getElementById("legend").innerHTML = players.map((p) => {
     const c = state.colorOf[p];
@@ -469,7 +526,7 @@ function applyHighlight() {
     el.dataset.player === player ||
     (el.dataset.team2 && state.ownerOf[el.dataset.team2] === player);
 
-  document.querySelectorAll(".srow, .row, .fixture").forEach((el) => {
+  document.querySelectorAll(".srow, .row, .fixture, .scorer-row").forEach((el) => {
     el.classList.toggle("is-dim", !rowMatches(el));
   });
 
@@ -489,7 +546,7 @@ function wireEvents() {
       document.querySelectorAll(".tab").forEach((t) => t.classList.remove("is-active"));
       tab.classList.add("is-active");
       const view = tab.dataset.view;
-      for (const v of ["groups", "fixtures", "knockout", "players", "odds"]) {
+      for (const v of ["groups", "fixtures", "knockout", "players", "odds", "scorers"]) {
         document.getElementById(`view-${v}`).hidden = v !== view;
       }
     });
@@ -507,17 +564,21 @@ function wireEvents() {
 
 async function init() {
   try {
-    const [groups, assignments, matchData, oddsData] = await Promise.all([
+    const [groups, assignments, matchData, oddsData, scorerData, factData] = await Promise.all([
       loadJSON("data/groups.json"),
       loadJSON("data/assignments.json"),
       loadJSON("data/matches.json").catch(() => ({ matches: [], updated: null })),
       loadJSON("data/odds.json").catch(() => ({})),
+      loadJSON("data/scorers.json").catch(() => ({ scorers: [] })),
+      loadJSON("data/facts.json").catch(() => ({})),
     ]);
     state.groups = groups;
     state.assignments = assignments;
     state.matches = matchData.matches || [];
     state.updated = matchData.updated || null;
     state.odds = oddsData || {};
+    state.scorers = scorerData.scorers || [];
+    state.facts = factData || {};
 
     const players = buildIndexes();
     const standings = computeStandings();
@@ -527,6 +588,7 @@ async function init() {
     renderKnockout();
     renderPlayers(standings);
     renderOdds();
+    renderScorers();
     renderLegend(players);
     renderStatus();
     wireEvents();
