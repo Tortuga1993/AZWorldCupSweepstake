@@ -137,6 +137,56 @@ function fmtDate(iso) {
   return d.toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
 }
 
+function fmtDateFull(iso) {
+  if (!iso) return "Date TBD";
+  return new Date(iso).toLocaleString(undefined, {
+    weekday: "short", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
+  });
+}
+
+function matchContext(m) {
+  if (isGroupStage(m)) {
+    const g = m.group || resolveRoster(m.home)?.group || resolveRoster(m.away)?.group;
+    return g ? `Group ${g}` : "Group stage";
+  }
+  return prettyStage(m.stage);
+}
+
+function renderNextMatch() {
+  const el = document.getElementById("next-match");
+  const upcoming = state.matches
+    .filter((m) => m.status !== "FINISHED" && m.utcDate)
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
+  const m = upcoming[0];
+  if (!m) { el.hidden = true; return; }
+  el.hidden = false;
+
+  const h = resolveRoster(m.home), a = resolveRoster(m.away);
+  const hn = m.home || "TBD", an = m.away || "TBD";
+  const live = m.status === "IN_PLAY" || m.status === "PAUSED";
+  const label = live ? `<span class="nm-live">● Live now</span>` : "Next match";
+  const middle = live && m.homeScore != null
+    ? `<span class="nm-score">${m.homeScore}–${m.awayScore}</span>`
+    : `<span class="nm-vs">v</span>`;
+
+  el.innerHTML = `
+    <div class="nm-head"><span class="nm-label">${label}</span><span class="nm-ctx">${matchContext(m)}</span></div>
+    <div class="nm-teams">
+      <div class="nm-team" data-team="${hn}" data-player="${state.ownerOf[hn] || ""}">
+        <span class="nm-flag">${h ? h.flag : "🏳️"}</span>
+        <span class="nm-name">${hn}</span>
+        ${ownerChip(hn)}
+      </div>
+      ${middle}
+      <div class="nm-team away" data-team="${an}" data-player="${state.ownerOf[an] || ""}">
+        <span class="nm-flag">${a ? a.flag : "🏳️"}</span>
+        <span class="nm-name">${an}</span>
+        ${ownerChip(an)}
+      </div>
+    </div>
+    <div class="nm-kickoff">🗓️ ${fmtDateFull(m.utcDate)}</div>`;
+}
+
 function fixtureRow(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hf = h ? h.flag : "🏳️", af = a ? a.flag : "🏳️";
@@ -345,6 +395,7 @@ async function init() {
 
     const players = buildIndexes();
     const standings = computeStandings();
+    renderNextMatch();
     renderGroups(standings);
     renderKnockout();
     renderPlayers(standings);
