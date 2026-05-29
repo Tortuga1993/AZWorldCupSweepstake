@@ -37,6 +37,23 @@ const state = {
   activePlayer: null,
 };
 
+// Theme switcher — applies immediately, independent of the data load.
+(function initThemeSwitch() {
+  const sw = document.getElementById("theme-switch");
+  if (!sw) return;
+  const current = document.documentElement.dataset.theme || "slate";
+  const mark = (t) => sw.querySelectorAll("button").forEach((b) => b.classList.toggle("is-active", b.dataset.theme === t));
+  mark(current);
+  sw.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-theme]");
+    if (!btn) return;
+    const t = btn.dataset.theme;
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem("wc-theme", t); } catch (_) { /* ignore */ }
+    mark(t);
+  });
+})();
+
 async function loadJSON(path) {
   const res = await fetch(path, { cache: "no-store" });
   if (!res.ok) throw new Error(`${path}: ${res.status}`);
@@ -162,7 +179,7 @@ function renderNextMatch() {
   el.hidden = false;
 
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
-  const hn = m.home || "TBD", an = m.away || "TBD";
+  const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
   const live = m.status === "IN_PLAY" || m.status === "PAUSED";
   const label = live ? `<span class="nm-live">● Live now</span>` : "Next match";
   const middle = live && m.homeScore != null
@@ -190,7 +207,7 @@ function renderNextMatch() {
 function fixtureRow(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hf = h ? h.flag : "🏳️", af = a ? a.flag : "🏳️";
-  const hn = m.home || "TBD", an = m.away || "TBD";
+  const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
   const played = m.homeScore != null && m.awayScore != null;
   const live = m.status === "IN_PLAY" || m.status === "PAUSED";
   const score = played
@@ -240,6 +257,48 @@ function renderGroups(standings) {
 
 function prettyStage(s) {
   return (s || "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+// Compact one-line fixture for the Fixtures tab (mobile-first).
+function fixtureRowCompact(m) {
+  const h = resolveRoster(m.home), a = resolveRoster(m.away);
+  const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
+  const played = m.homeScore != null && m.awayScore != null;
+  const live = m.status === "IN_PLAY" || m.status === "PAUSED";
+  const time = m.utcDate ? new Date(m.utcDate).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) : "—";
+  const tag = isGroupStage(m)
+    ? (m.group || resolveRoster(m.home)?.group || resolveRoster(m.away)?.group || "")
+    : prettyStage(m.stage);
+  const mid = played
+    ? `<span class="fx-sc ${live ? "live" : ""}">${m.homeScore}–${m.awayScore}</span>`
+    : `<span class="fx-time">${time}</span>`;
+  return `
+    <div class="fixture compact" data-team="${hn}" data-team2="${an}" data-player="${state.ownerOf[hn] || ""}">
+      <span class="side home"><span class="fx-tn">${hn}</span><span class="fx-flag">${h ? h.flag : "🏳️"}</span></span>
+      <span class="fx-mid">${live ? '<span class="livedot"></span>' : ""}<span class="fx-tag">${tag}</span>${mid}</span>
+      <span class="side away"><span class="fx-flag">${a ? a.flag : "🏳️"}</span><span class="fx-tn">${an}</span></span>
+    </div>`;
+}
+
+function renderFixtures() {
+  const el = document.getElementById("view-fixtures");
+  if (!state.matches.length) {
+    el.innerHTML = `<p class="empty">Fixtures will appear here once the schedule is published.</p>`;
+    return;
+  }
+  const sorted = [...state.matches].sort((a, b) => (a.utcDate || "").localeCompare(b.utcDate || ""));
+  const days = new Map();
+  for (const m of sorted) {
+    const key = m.utcDate
+      ? new Date(m.utcDate).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })
+      : "Date TBD";
+    (days.get(key) || days.set(key, []).get(key)).push(m);
+  }
+  el.innerHTML = [...days].map(([day, ms]) => `
+    <div class="fx-day">
+      <h3 class="fx-date">${day}</h3>
+      <div class="fx-list">${ms.map(fixtureRowCompact).join("")}</div>
+    </div>`).join("");
 }
 
 function renderKnockout() {
@@ -334,26 +393,28 @@ function renderStatus() {
 // ---- Interaction --------------------------------------------------------
 function applyHighlight() {
   const player = state.activePlayer;
-  const term = document.getElementById("search").value.trim().toLowerCase();
 
   document.querySelectorAll(".legend .chip").forEach((chip) => {
     chip.classList.toggle("is-dim", !!player && chip.dataset.player !== player);
   });
 
-  const matchRow = (el) => {
-    const t1 = (el.dataset.team || "").toLowerCase();
-    const t2 = (el.dataset.team2 || "").toLowerCase();
-    const owner = (el.dataset.player || "").toLowerCase();
-    const matchesPlayer = !player || el.dataset.player === player ||
-      (el.dataset.team2 && state.ownerOf[el.dataset.team2] === player);
-    const matchesTerm = !term || t1.includes(term) || t2.includes(term) || owner.includes(term);
-    return { show: matchesPlayer && matchesTerm, hit: !!term && (t1.includes(term) || t2.includes(term) || owner.includes(term)) };
-  };
+  // A row matches if the active player owns either of its teams.
+  const rowMatches = (el) =>
+    !player ||
+    el.dataset.player === player ||
+    (el.dataset.team2 && state.ownerOf[el.dataset.team2] === player);
 
   document.querySelectorAll(".srow, .row, .fixture").forEach((el) => {
-    const { show, hit } = matchRow(el);
-    el.classList.toggle("is-dim", !show);
-    el.classList.toggle("is-hit", hit && show);
+    el.classList.toggle("is-dim", !rowMatches(el));
+  });
+
+  // When a player is selected, hide whole cards/groups/days containing nothing of theirs
+  // (cleaner browsing, especially on mobile).
+  document.querySelectorAll("#view-groups .card, #view-fixtures .fx-day, #view-knockout .stage, #view-players .card").forEach((c) => {
+    if (!player) { c.classList.remove("is-hidden"); return; }
+    const rows = c.querySelectorAll(".srow, .row, .fixture");
+    const anyShown = [...rows].some((r) => !r.classList.contains("is-dim"));
+    c.classList.toggle("is-hidden", rows.length > 0 && !anyShown);
   });
 }
 
@@ -363,13 +424,11 @@ function wireEvents() {
       document.querySelectorAll(".tab").forEach((t) => t.classList.remove("is-active"));
       tab.classList.add("is-active");
       const view = tab.dataset.view;
-      for (const v of ["groups", "knockout", "players"]) {
+      for (const v of ["groups", "fixtures", "knockout", "players"]) {
         document.getElementById(`view-${v}`).hidden = v !== view;
       }
     });
   });
-
-  document.getElementById("search").addEventListener("input", applyHighlight);
 
   document.body.addEventListener("click", (e) => {
     const target = e.target.closest("[data-player]");
@@ -396,6 +455,7 @@ async function init() {
     const players = buildIndexes();
     const standings = computeStandings();
     renderNextMatch();
+    renderFixtures();
     renderGroups(standings);
     renderKnockout();
     renderPlayers(standings);

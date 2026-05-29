@@ -4,13 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bollocks World Cup Sweepstake</title>
+  <script>try { var t = localStorage.getItem("wc-theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="site-header">
     <div class="wrap">
       <h1>🏆 Bollocks World Cup Sweepstake</h1>
-      <p class="tagline">12 players · 48 teams · 12 groups · Canada / Mexico / USA</p>
       <div class="prizes">
         <span class="prize"><span class="medal">🥇</span> Winner <strong>£100</strong></span>
         <span class="prize"><span class="medal">🥈</span> Runner-up <strong>£20</strong></span>
@@ -20,6 +23,7 @@
 
   <nav class="tabs wrap" role="tablist">
     <button class="tab is-active" data-view="groups" role="tab">Group stage</button>
+    <button class="tab" data-view="fixtures" role="tab">Fixtures</button>
     <button class="tab" data-view="knockout" role="tab">Knockout</button>
     <button class="tab" data-view="players" role="tab">Players</button>
   </nav>
@@ -28,17 +32,28 @@
     <section id="next-match" class="next-match" hidden></section>
 
     <div class="toolbar">
-      <input id="search" type="search" placeholder="Filter by team or player…" autocomplete="off" />
       <div id="legend" class="legend"></div>
     </div>
     <p id="status" class="status"></p>
 
     <section id="view-groups" class="view"></section>
+    <section id="view-fixtures" class="view" hidden></section>
     <section id="view-knockout" class="view" hidden></section>
     <section id="view-players" class="view" hidden></section>
   </main>
 
   <footer class="site-footer wrap">
+    <div class="theme-pick">
+      <span class="theme-label">Theme</span>
+      <div class="theme-switch" id="theme-switch">
+        <button data-theme="slate" style="--sw:#34d399"><span class="sw"></span>Slate</button>
+        <button data-theme="forest" style="--sw:#4ade80"><span class="sw"></span>Forest</button>
+        <button data-theme="indigo" style="--sw:#fbbf24"><span class="sw"></span>Indigo</button>
+        <button data-theme="ocean" style="--sw:#22d3ee"><span class="sw"></span>Ocean</button>
+        <button data-theme="sunset" style="--sw:#fb7185"><span class="sw"></span>Sunset</button>
+        <button data-theme="light" style="--sw:#2563eb"><span class="sw"></span>Light</button>
+      </div>
+    </div>
     <p>Scores auto-update via a scheduled GitHub Action writing to <code>data/matches.json</code>.
       Player–team assignments live in <code>data/assignments.json</code>. Top 2 of each group qualify
       (plus the 8 best third-placed teams); standings use points, then goal difference, then goals scored.</p>
