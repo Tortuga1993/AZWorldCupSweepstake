@@ -1,6 +1,17 @@
 {
-  "updated": "2026-05-29T21:03:55.261Z",
+  "updated": "2026-06-12T21:30:00Z",
   "competition": "WC",
-  "count": 0,
-  "scorers": []
+  "count": 9,
+  "_comment": "SAMPLE/DEMO DATA — placeholder top scorers. The scheduled Action is paused so this stays put; re-enable it (overwrites this file with live data) before kickoff.",
+  "scorers": [
+    { "player": "Harry Kane", "team": "England", "goals": 2, "assists": 1 },
+    { "player": "Santiago Giménez", "team": "Mexico", "goals": 2, "assists": 0 },
+    { "player": "Enner Valencia", "team": "Ecuador", "goals": 2, "assists": 0 },
+    { "player": "Jude Bellingham", "team": "England", "goals": 1, "assists": 1 },
+    { "player": "Lamine Yamal", "team": "Spain", "goals": 1, "assists": 1 },
+    { "player": "Dani Olmo", "team": "Spain", "goals": 1, "assists": 0 },
+    { "player": "Patrik Schick", "team": "Czech Republic", "goals": 1, "assists": 0 },
+    { "player": "Son Heung-min", "team": "South Korea", "goals": 1, "assists": 0 },
+    { "player": "Moisés Caicedo", "team": "Ecuador", "goals": 1, "assists": 0 }
+  ]
 }

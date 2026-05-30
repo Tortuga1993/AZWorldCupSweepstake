@@ -260,6 +260,19 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
 .nm-facts .ff { margin-right: 5px; }
 .nm-facts b { color: var(--text); font-weight: 700; margin-right: 4px; }
 
+/* Next matches tab (one card per game on the next fixture day) */
+.nmx-day { font-family: var(--font-head); font-weight: 700; font-size: 0.95rem; text-align: center; color: var(--text); margin: 4px 0 12px; }
+.nmx-list { display: flex; flex-direction: column; gap: 10px; max-width: 560px; margin: 0 auto; }
+.nmx {
+  background: linear-gradient(135deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 10px 14px;
+}
+.nmx.is-dim { opacity: 0.25; }
+
+/* Player win-% bar + per-team % */
+.pcard-bar { margin: 11px 16px; }
+.player-teams .row .twin { font-size: 0.72rem; color: var(--muted); font-weight: 700; font-variant-numeric: tabular-nums; }
+
 /* Standings table */
 .standings { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
 .standings td { padding: 9px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }

@@ -206,35 +206,19 @@ function matchContext(m) {
   return prettyStage(m.stage);
 }
 
-function renderNextMatch() {
-  const el = document.getElementById("next-match");
-  const upcoming = state.matches
-    .filter((m) => m.status !== "FINISHED" && m.utcDate)
-    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
-  const m = upcoming[0];
-  if (!m) { el.hidden = true; return; }
-  el.hidden = false;
-
+// One card per upcoming game on the next fixture day.
+function nextMatchCard(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
   const live = m.status === "IN_PLAY" || m.status === "PAUSED";
-  const label = live ? `<span class="nm-live">● Live now</span>` : "Next match";
+  const time = m.utcDate
+    ? new Date(m.utcDate).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
+    : "TBD";
+  const right = live ? `<span class="nm-live">● Live</span>` : time;
   const middle = live && m.homeScore != null
     ? `<span class="nm-score">${m.homeScore}–${m.awayScore}</span>`
     : `<span class="nm-vs">v</span>`;
 
-  // Obscure fact for each country (picked at random from data/facts.json).
-  const randFact = (name) => {
-    const arr = state.facts[name];
-    return Array.isArray(arr) && arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
-  };
-  const fh = randFact(hn), fa = randFact(an);
-  const factsHtml = (fh || fa) ? `<div class="nm-facts">
-    ${fh ? `<p title="${hn}: ${fh}"><span class="ff">${h ? h.flag : "🏳️"}</span><b>${hn}</b> ${fh}</p>` : ""}
-    ${fa ? `<p title="${an}: ${fa}"><span class="ff">${a ? a.flag : "🏳️"}</span><b>${an}</b> ${fa}</p>` : ""}
-  </div>` : "";
-
-  // 1X2 match odds, shown only when football-data supplied them.
   const o = m.odds;
   const oddsHtml = o && typeof o.home === "number"
     ? `<div class="nm-odds" title="Match odds (home / draw / away)">
@@ -244,24 +228,41 @@ function renderNextMatch() {
        </div>`
     : "";
 
-  el.innerHTML = `
-    <div class="nm-head"><span class="nm-label">${label}</span><span class="nm-ctx">${matchContext(m)}</span></div>
-    <div class="nm-teams">
-      <div class="nm-team" data-team="${hn}" data-player="${state.ownerOf[hn] || ""}">
-        <span class="nm-flag">${h ? h.flag : "🏳️"}</span>
-        <span class="nm-name">${hn}</span>
-        ${ownerChip(hn)}
+  return `
+    <div class="nmx" data-team="${hn}" data-team2="${an}" data-player="${state.ownerOf[hn] || ""}">
+      <div class="nm-head"><span class="nm-ctx">${matchContext(m)}</span><span>${right}</span></div>
+      <div class="nm-teams">
+        <div class="nm-team">
+          <span class="nm-flag">${h ? h.flag : "🏳️"}</span><span class="nm-name">${hn}</span>${ownerChip(hn)}
+        </div>
+        ${middle}
+        <div class="nm-team away">
+          <span class="nm-flag">${a ? a.flag : "🏳️"}</span><span class="nm-name">${an}</span>${ownerChip(an)}
+        </div>
       </div>
-      ${middle}
-      <div class="nm-team away" data-team="${an}" data-player="${state.ownerOf[an] || ""}">
-        <span class="nm-flag">${a ? a.flag : "🏳️"}</span>
-        <span class="nm-name">${an}</span>
-        ${ownerChip(an)}
-      </div>
-    </div>
-    <div class="nm-kickoff">🗓️ ${fmtDateFull(m.utcDate)}</div>
-    ${oddsHtml}
-    ${factsHtml}`;
+      ${oddsHtml}
+    </div>`;
+}
+
+// "Next matches" tab — every game on the next day that has fixtures.
+function renderNextMatches() {
+  const el = document.getElementById("view-next");
+  const upcoming = state.matches
+    .filter((m) => m.status !== "FINISHED" && m.utcDate)
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
+  if (!upcoming.length) {
+    el.innerHTML = `<p class="empty">No upcoming fixtures scheduled.</p>`;
+    return;
+  }
+  const dayKey = new Date(upcoming[0].utcDate).toLocaleDateString();
+  const dayLabel = new Date(upcoming[0].utcDate).toLocaleDateString(undefined, {
+    weekday: "long", month: "short", day: "numeric",
+  });
+  const games = upcoming
+    .filter((m) => new Date(m.utcDate).toLocaleDateString() === dayKey)
+    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
+  el.innerHTML = `<h3 class="nmx-day">${dayLabel} · ${games.length} ${games.length === 1 ? "game" : "games"}</h3>
+    <div class="nmx-list">${games.map(nextMatchCard).join("")}</div>`;
 }
 
 function fixtureRow(m) {
@@ -385,6 +386,18 @@ function renderKnockout() {
   }</div>`;
 }
 
+// Implied win probability per team from outright odds (1/odds, normalised).
+function computeWinProb() {
+  const raw = {}; let total = 0;
+  for (const [t, o] of Object.entries(state.odds)) {
+    if (t.startsWith("_") || !(o > 0)) continue;
+    raw[t] = 1 / o; total += raw[t];
+  }
+  const prob = {};
+  if (total) for (const t in raw) prob[t] = raw[t] / total;
+  return { prob, hasOdds: total > 0 };
+}
+
 function renderPlayers(standings) {
   const el = document.getElementById("view-players");
   const alive = aliveSet(standings);
@@ -396,32 +409,46 @@ function renderPlayers(standings) {
   const groupOf = {}, flagOf = {};
   for (const [g, teams] of Object.entries(state.groups)) for (const t of teams) { groupOf[t.name] = g; flagOf[t.name] = t.flag; }
 
+  // pooled win % per player (same system as the old Odds tab)
+  const { prob, hasOdds } = computeWinProb();
+
   const rows = players.map((p) => {
     const teams = state.assignments[p];
     const pts = teams.reduce((s, t) => s + (teamStat[t]?.Pts || 0), 0);
     const gf = teams.reduce((s, t) => s + (teamStat[t]?.GF || 0), 0);
     const ga = teams.reduce((s, t) => s + (teamStat[t]?.GA || 0), 0);
     const aliveCount = teams.filter((t) => alive.has(t)).length;
-    return { p, teams, pts, gf, ga, aliveCount };
-  }).sort((x, y) => y.pts - x.pts || (y.gf - y.ga) - (x.gf - x.ga) || y.aliveCount - x.aliveCount);
+    const win = teams.reduce((s, t) => s + (prob[t] || 0), 0);
+    return { p, teams, pts, gf, ga, aliveCount, win };
+  }).sort((x, y) => hasOdds
+    ? (y.win - x.win) || (y.pts - x.pts)
+    : (y.pts - x.pts) || (y.gf - y.ga) - (x.gf - x.ga) || (y.aliveCount - x.aliveCount));
+
+  const maxWin = Math.max(...rows.map((r) => r.win), 0.0001);
 
   el.innerHTML = `<div class="grid players">${
     rows.map((r, i) => {
       const c = state.colorOf[r.p];
+      const sub = hasOdds
+        ? `<b>${(r.win * 100).toFixed(1)}%</b> to win · ${r.pts} pts · ${r.aliveCount}/4 alive`
+        : `${r.pts} pts · ${r.aliveCount}/4 alive`;
       return `
       <div class="card" data-player="${r.p}">
         <div class="card-head" style="border-left:4px solid ${c}">
           <h2><span class="rank">${i + 1}</span> ${r.p}</h2>
-          <span class="sub">${r.pts} pts · ${r.aliveCount}/4 alive</span>
+          <span class="sub">${sub}</span>
         </div>
+        ${hasOdds ? `<div class="obar pcard-bar"><span style="width:${(r.win / maxWin * 100).toFixed(1)}%;background:${c}"></span></div>` : ""}
         <div class="player-teams">${
           r.teams.map((name) => {
             const out = !alive.has(name);
+            const tw = hasOdds ? `<span class="twin">${((prob[name] || 0) * 100).toFixed(1)}%</span>` : "";
             return `
             <div class="row ${out ? "out" : ""}" data-team="${name}" data-player="${r.p}">
               <span class="flag">${flagOf[name] || "🏳️"}</span>
               <span class="team">${name}</span>
               <span class="grp">${groupOf[name] || "?"}</span>
+              ${tw}
               <span class="tpts">${teamStat[name]?.Pts ?? 0}p</span>
             </div>`;
           }).join("")
@@ -429,54 +456,6 @@ function renderPlayers(standings) {
       </div>`;
     }).join("")
   }</div>`;
-}
-
-// Each player's pooled chance of owning the World Cup winner, from outright odds.
-function renderOdds() {
-  const el = document.getElementById("view-odds");
-  const flagOf = {};
-  for (const teams of Object.values(state.groups)) for (const t of teams) flagOf[t.name] = t.flag;
-
-  // Implied probabilities (1/odds), normalised across all priced teams.
-  const raw = {}; let total = 0;
-  for (const [t, o] of Object.entries(state.odds)) {
-    if (t.startsWith("_") || !(o > 0)) continue;
-    raw[t] = 1 / o; total += raw[t];
-  }
-  if (!total) {
-    el.innerHTML = `<p class="empty">Add outright odds to <code>data/odds.json</code> to see each player's chance of winning.</p>`;
-    return;
-  }
-  const prob = {};
-  for (const t in raw) prob[t] = raw[t] / total;
-
-  const players = Object.keys(state.assignments).filter((k) => !k.startsWith("_"));
-  const rows = players.map((name) => {
-    const breakdown = state.assignments[name]
-      .map((t) => ({ t, p: prob[t] || 0 }))
-      .sort((a, b) => b.p - a.p);
-    return { name, p: breakdown.reduce((s, x) => s + x.p, 0), breakdown };
-  }).sort((a, b) => b.p - a.p);
-
-  const max = rows[0].p || 1;
-  el.innerHTML = `<div class="odds-board">${
-    rows.map((pl, i) => {
-      const c = state.colorOf[pl.name];
-      return `
-      <div class="odds-row r${i + 1}" data-player="${pl.name}">
-        <div class="odds-top">
-          <span class="orank">${i + 1}</span>
-          <span class="oname">${pl.name}</span>
-          <span class="opct">${(pl.p * 100).toFixed(1)}%${pl.p > 0 ? `<span class="ofair">≈ ${toFraction(1 / pl.p)}</span>` : ""}</span>
-        </div>
-        <div class="obar"><span style="width:${(pl.p / max * 100).toFixed(1)}%;background:${c}"></span></div>
-        <div class="oteams">${
-          pl.breakdown.map((x) => `<span class="oteam"><span class="ofl">${flagOf[x.t] || "🏳️"}</span>${x.t}<span class="otp">${(x.p * 100).toFixed(1)}%</span></span>`).join("")
-        }</div>
-      </div>`;
-    }).join("")
-  }</div>
-  <p class="odds-note">Implied from decimal outright odds in <code>data/odds.json</code> (1 ÷ odds), normalised across all priced teams, then summed per player — the percentages add up to 100%.</p>`;
 }
 
 // Tournament top scorers: player, the country they play for, goals, and team owner.
@@ -544,7 +523,7 @@ function applyHighlight() {
     el.dataset.player === player ||
     (el.dataset.team2 && state.ownerOf[el.dataset.team2] === player);
 
-  document.querySelectorAll(".srow, .row, .fixture, .scorer-row").forEach((el) => {
+  document.querySelectorAll(".srow, .row, .fixture, .scorer-row, .nmx").forEach((el) => {
     el.classList.toggle("is-dim", !rowMatches(el));
   });
 
@@ -564,7 +543,7 @@ function wireEvents() {
       document.querySelectorAll(".tab").forEach((t) => t.classList.remove("is-active"));
       tab.classList.add("is-active");
       const view = tab.dataset.view;
-      for (const v of ["groups", "fixtures", "knockout", "players", "odds", "scorers"]) {
+      for (const v of ["next", "groups", "fixtures", "knockout", "players", "scorers"]) {
         document.getElementById(`view-${v}`).hidden = v !== view;
       }
     });
@@ -600,12 +579,11 @@ async function init() {
 
     const players = buildIndexes();
     const standings = computeStandings();
-    renderNextMatch();
+    renderNextMatches();
     renderFixtures();
     renderGroups(standings);
     renderKnockout();
     renderPlayers(standings);
-    renderOdds();
     renderScorers();
     renderLegend(players);
     renderStatus();

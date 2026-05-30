@@ -22,27 +22,25 @@
   </header>
 
   <nav class="tabs wrap" role="tablist">
-    <button class="tab is-active" data-view="groups" role="tab">Groups</button>
+    <button class="tab is-active" data-view="next" role="tab">Next matches</button>
+    <button class="tab" data-view="groups" role="tab">Groups</button>
     <button class="tab" data-view="fixtures" role="tab">Fixtures</button>
     <button class="tab" data-view="knockout" role="tab">Knockout</button>
     <button class="tab" data-view="players" role="tab">Players</button>
-    <button class="tab" data-view="odds" role="tab">Odds</button>
     <button class="tab" data-view="scorers" role="tab">Scorers</button>
   </nav>
 
   <main class="wrap">
-    <section id="next-match" class="next-match" hidden></section>
-
     <div class="toolbar">
       <div id="legend" class="legend"></div>
     </div>
     <p id="status" class="status"></p>
 
-    <section id="view-groups" class="view"></section>
+    <section id="view-next" class="view"></section>
+    <section id="view-groups" class="view" hidden></section>
     <section id="view-fixtures" class="view" hidden></section>
     <section id="view-knockout" class="view" hidden></section>
     <section id="view-players" class="view" hidden></section>
-    <section id="view-odds" class="view" hidden></section>
     <section id="view-scorers" class="view" hidden></section>
   </main>
 
