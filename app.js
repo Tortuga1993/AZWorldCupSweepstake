@@ -206,6 +206,12 @@ function matchContext(m) {
   return prettyStage(m.stage);
 }
 
+// A random obscure fact for a country (from data/facts.json), or null.
+function randFact(name) {
+  const arr = state.facts[name];
+  return Array.isArray(arr) && arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
+}
+
 // One card per upcoming game on the next fixture day.
 function nextMatchCard(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
@@ -228,6 +234,12 @@ function nextMatchCard(m) {
        </div>`
     : "";
 
+  const fh = randFact(hn), fa = randFact(an);
+  const factsHtml = (fh || fa) ? `<div class="nm-facts">
+    ${fh ? `<p title="${hn}: ${fh}"><span class="ff">${h ? h.flag : "🏳️"}</span><b>${hn}</b> ${fh}</p>` : ""}
+    ${fa ? `<p title="${an}: ${fa}"><span class="ff">${a ? a.flag : "🏳️"}</span><b>${an}</b> ${fa}</p>` : ""}
+  </div>` : "";
+
   return `
     <div class="nmx" data-team="${hn}" data-team2="${an}" data-player="${state.ownerOf[hn] || ""}">
       <div class="nm-head"><span class="nm-ctx">${matchContext(m)}</span><span>${right}</span></div>
@@ -241,6 +253,7 @@ function nextMatchCard(m) {
         </div>
       </div>
       ${oddsHtml}
+      ${factsHtml}
     </div>`;
 }
 
@@ -515,6 +528,7 @@ function applyHighlight() {
 
   document.querySelectorAll(".legend .chip").forEach((chip) => {
     chip.classList.toggle("is-dim", !!player && chip.dataset.player !== player);
+    chip.classList.toggle("is-on", !!player && chip.dataset.player === player);
   });
 
   // A row matches if the active player owns either of its teams.
@@ -535,6 +549,19 @@ function applyHighlight() {
     const anyShown = [...rows].some((r) => !r.classList.contains("is-dim"));
     c.classList.toggle("is-hidden", rows.length > 0 && !anyShown);
   });
+
+  // Next-match cards: hide the ones that aren't the selected player's.
+  document.querySelectorAll("#view-next .nmx").forEach((c) => {
+    c.classList.toggle("is-hidden", !!player && c.classList.contains("is-dim"));
+  });
+
+  // Active-filter banner with a one-tap clear.
+  const note = document.getElementById("filter-note");
+  if (note) {
+    note.innerHTML = player
+      ? `Showing <b>${player}</b>'s teams <button class="filter-clear" type="button">clear ✕</button>`
+      : "";
+  }
 }
 
 function wireEvents() {
@@ -550,6 +577,11 @@ function wireEvents() {
   });
 
   document.body.addEventListener("click", (e) => {
+    if (e.target.closest(".filter-clear")) {
+      state.activePlayer = null;
+      applyHighlight();
+      return;
+    }
     const target = e.target.closest("[data-player]");
     if (!target || !target.dataset.player) return;
     if (target.classList.contains("team") || target.classList.contains("grp")) return;
