@@ -150,7 +150,6 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
 .chip.is-dim { opacity: 0.28; }
 .chip.is-on { border-color: var(--accent); color: var(--text); box-shadow: 0 0 0 1px var(--accent); }
 
-.legend-hint { width: 100%; margin: 2px 0 0; color: var(--muted); font-size: 0.74rem; }
 .filter-note { width: 100%; margin: 2px 0 0; font-size: 0.82rem; color: var(--text); }
 .filter-note:empty { display: none; }
 .filter-note b { color: var(--accent); }
