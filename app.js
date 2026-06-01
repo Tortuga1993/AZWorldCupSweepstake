@@ -212,17 +212,19 @@ function randFact(name) {
   return Array.isArray(arr) && arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
 }
 
-// One card per upcoming game on the next fixture day.
-function nextMatchCard(m) {
+// A rich match card (used on the Fixtures tab): teams + owners, score or
+// kickoff, 1X2 odds when available, and an obscure fact per country.
+function matchCard(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
   const live = m.status === "IN_PLAY" || m.status === "PAUSED";
+  const played = m.homeScore != null && m.awayScore != null;
   const time = m.utcDate
     ? new Date(m.utcDate).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
     : "TBD";
-  const right = live ? `<span class="nm-live">● Live</span>` : time;
-  const middle = live && m.homeScore != null
-    ? `<span class="nm-score">${m.homeScore}–${m.awayScore}</span>`
+  const right = live ? `<span class="nm-live">● Live</span>` : (played ? "FT" : time);
+  const middle = played
+    ? `<span class="nm-score ${live ? "live" : ""}">${m.homeScore}–${m.awayScore}</span>`
     : `<span class="nm-vs">v</span>`;
 
   const o = m.odds;
@@ -258,26 +260,6 @@ function nextMatchCard(m) {
 }
 
 // "Next matches" tab — every game on the next day that has fixtures.
-function renderNextMatches() {
-  const el = document.getElementById("view-next");
-  const upcoming = state.matches
-    .filter((m) => m.status !== "FINISHED" && m.utcDate)
-    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
-  if (!upcoming.length) {
-    el.innerHTML = `<p class="empty">No upcoming fixtures scheduled.</p>`;
-    return;
-  }
-  const dayKey = new Date(upcoming[0].utcDate).toLocaleDateString();
-  const dayLabel = new Date(upcoming[0].utcDate).toLocaleDateString(undefined, {
-    weekday: "long", month: "short", day: "numeric",
-  });
-  const games = upcoming
-    .filter((m) => new Date(m.utcDate).toLocaleDateString() === dayKey)
-    .sort((a, b) => a.utcDate.localeCompare(b.utcDate));
-  el.innerHTML = `<h3 class="nmx-day">${dayLabel} · ${games.length} ${games.length === 1 ? "game" : "games"}</h3>
-    <div class="nmx-list">${games.map(nextMatchCard).join("")}</div>`;
-}
-
 function fixtureRow(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hf = h ? h.flag : "🏳️", af = a ? a.flag : "🏳️";
@@ -333,27 +315,6 @@ function prettyStage(s) {
   return (s || "").replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-// Compact one-line fixture for the Fixtures tab (mobile-first).
-function fixtureRowCompact(m) {
-  const h = resolveRoster(m.home), a = resolveRoster(m.away);
-  const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
-  const played = m.homeScore != null && m.awayScore != null;
-  const live = m.status === "IN_PLAY" || m.status === "PAUSED";
-  const time = m.utcDate ? new Date(m.utcDate).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" }) : "—";
-  const tag = isGroupStage(m)
-    ? (m.group || resolveRoster(m.home)?.group || resolveRoster(m.away)?.group || "")
-    : prettyStage(m.stage);
-  const mid = played
-    ? `<span class="fx-sc ${live ? "live" : ""}">${m.homeScore}–${m.awayScore}</span>`
-    : `<span class="fx-time">${time}</span>`;
-  return `
-    <div class="fixture compact" data-team="${hn}" data-team2="${an}" data-player="${state.ownerOf[hn] || ""}">
-      <span class="side home"><span class="fx-tn">${hn}</span><span class="fx-flag">${h ? h.flag : "🏳️"}</span></span>
-      <span class="fx-mid">${live ? '<span class="livedot"></span>' : ""}<span class="fx-tag">${tag}</span>${mid}</span>
-      <span class="side away"><span class="fx-flag">${a ? a.flag : "🏳️"}</span><span class="fx-tn">${an}</span></span>
-    </div>`;
-}
-
 function renderFixtures() {
   const el = document.getElementById("view-fixtures");
   if (!state.matches.length) {
@@ -371,8 +332,53 @@ function renderFixtures() {
   el.innerHTML = [...days].map(([day, ms]) => `
     <div class="fx-day">
       <h3 class="fx-date">${day}</h3>
-      <div class="fx-list">${ms.map(fixtureRowCompact).join("")}</div>
+      <div class="nmx-list">${ms.map(matchCard).join("")}</div>
     </div>`).join("");
+}
+
+// "Shittest Team" — every team ranked by goals conceded (most first), with owner.
+function computeConceded() {
+  const ga = {}, played = {};
+  for (const teams of Object.values(state.groups)) for (const t of teams) { ga[t.name] = 0; played[t.name] = 0; }
+  for (const m of state.matches) {
+    if (m.homeScore == null || m.awayScore == null) continue;
+    const h = resolveRoster(m.home), a = resolveRoster(m.away);
+    if (h) { ga[h.name] += m.awayScore; played[h.name]++; }
+    if (a) { ga[a.name] += m.homeScore; played[a.name]++; }
+  }
+  return { ga, played };
+}
+
+function renderShittest() {
+  const el = document.getElementById("view-shittest");
+  const flagOf = {};
+  for (const teams of Object.values(state.groups)) for (const t of teams) flagOf[t.name] = t.flag;
+  const { ga, played } = computeConceded();
+
+  const rows = Object.keys(ga)
+    .map((name) => ({ name, ga: ga[name], played: played[name] }))
+    .sort((x, y) => y.ga - x.ga || y.played - x.played || x.name.localeCompare(y.name));
+
+  el.innerHTML = `
+    <p class="shittest-note">Every team ranked by goals conceded — the leakiest defence sits top.</p>
+    <div class="table-scroll">
+      <table class="scorers">
+        <thead><tr><th class="pos">#</th><th>Team</th><th class="c">Conceded</th><th class="c">Pld</th><th>Owner</th></tr></thead>
+        <tbody>${
+          rows.map((r, i) => {
+            const owner = state.ownerOf[r.name];
+            return `
+            <tr class="scorer-row" data-team="${r.name}" data-player="${owner || ""}">
+              <td class="pos">${i + 1}</td>
+              <td class="ct"><span class="flag">${flagOf[r.name] || "🏳️"}</span><span class="ctn">${r.name}</span></td>
+              <td class="c g">${r.ga}</td>
+              <td class="c">${r.played}</td>
+              <td>${owner ? ownerChip(r.name) : '<span class="owner muted">—</span>'}</td>
+            </tr>`;
+          }).join("")
+        }</tbody>
+      </table>
+    </div>`;
 }
 
 function renderKnockout() {
@@ -541,18 +547,24 @@ function applyHighlight() {
     el.classList.toggle("is-dim", !rowMatches(el));
   });
 
-  // When a player is selected, hide whole cards/groups/days containing nothing of theirs
-  // (cleaner browsing, especially on mobile).
-  document.querySelectorAll("#view-groups .card, #view-fixtures .fx-day, #view-knockout .stage, #view-players .card").forEach((c) => {
+  // Fixture cards: hide the ones that aren't the selected player's.
+  document.querySelectorAll("#view-fixtures .nmx").forEach((c) => {
+    c.classList.toggle("is-hidden", !!player && c.classList.contains("is-dim"));
+  });
+
+  // When a player is selected, hide whole cards/groups/days/stages with nothing of theirs.
+  document.querySelectorAll("#view-groups .card, #view-knockout .stage, #view-players .card").forEach((c) => {
     if (!player) { c.classList.remove("is-hidden"); return; }
     const rows = c.querySelectorAll(".srow, .row, .fixture");
     const anyShown = [...rows].some((r) => !r.classList.contains("is-dim"));
     c.classList.toggle("is-hidden", rows.length > 0 && !anyShown);
   });
-
-  // Next-match cards: hide the ones that aren't the selected player's.
-  document.querySelectorAll("#view-next .nmx").forEach((c) => {
-    c.classList.toggle("is-hidden", !!player && c.classList.contains("is-dim"));
+  // Fixture day groups: hide a day if none of its cards are the player's.
+  document.querySelectorAll("#view-fixtures .fx-day").forEach((c) => {
+    if (!player) { c.classList.remove("is-hidden"); return; }
+    const cards = c.querySelectorAll(".nmx");
+    const anyShown = [...cards].some((x) => !x.classList.contains("is-dim"));
+    c.classList.toggle("is-hidden", cards.length > 0 && !anyShown);
   });
 
   // Active-filter banner with a one-tap clear.
@@ -570,7 +582,7 @@ function wireEvents() {
       document.querySelectorAll(".tab").forEach((t) => t.classList.remove("is-active"));
       tab.classList.add("is-active");
       const view = tab.dataset.view;
-      for (const v of ["next", "groups", "fixtures", "knockout", "players", "scorers"]) {
+      for (const v of ["groups", "knockout", "fixtures", "scorers", "players", "shittest"]) {
         document.getElementById(`view-${v}`).hidden = v !== view;
       }
     });
@@ -611,12 +623,12 @@ async function init() {
 
     const players = buildIndexes();
     const standings = computeStandings();
-    renderNextMatches();
     renderFixtures();
     renderGroups(standings);
     renderKnockout();
     renderPlayers(standings);
     renderScorers();
+    renderShittest();
     renderLegend(players);
     renderStatus();
     wireEvents();

@@ -382,6 +382,7 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
 .scorers .ct { display: flex; align-items: center; gap: 7px; }
 .scorers .ct .flag { font-size: 1.15rem; }
 .scorer-row.is-dim { opacity: 0.22; }
+.shittest-note { color: var(--muted); font-size: 0.82rem; text-align: center; max-width: 620px; margin: 0 auto 14px; }
 
 /* Odds tab */
 .odds-board { display: flex; flex-direction: column; gap: 10px; max-width: 620px; margin: 0 auto; }

@@ -1,75 +1,75 @@
 {
   "_comment": "Sweepstake draw: maps each person to their 4 teams. Names not yet drawn, so 'Person 1'..'Person 12' are placeholders. Team names must exactly match those in groups.json. After the real draw, just edit the names and/or reshuffle the teams here — the site updates automatically.",
   "Lordy": [
-    "Curaçao",
-    "Panama",
-    "Australia",
-    "South Africa"
-  ],
-  "Adair": [
-    "Paraguay",
-    "Ghana",
-    "Czech Republic",
-    "Haiti"
-  ],
-  "George": [
-    "Ivory Coast",
-    "England",
-    "Scotland",
-    "Uruguay"
-  ],
-  "Glen": [
-    "France",
-    "Portugal",
-    "Mexico",
-    "South Korea"
-  ],
-  "Hoggard": [
-    "New Zealand",
-    "Qatar",
-    "Turkey",
-    "Bosnia and Herzegovina"
-  ],
-  "Robbo": [
-    "United States",
-    "Croatia",
-    "Jordan",
+    "Senegal",
+    "South Korea",
+    "Colombia",
     "Austria"
   ],
-  "Sadegh": [
+  "Adair": [
+    "Brazil",
     "Sweden",
+    "Uzbekistan",
+    "Ecuador"
+  ],
+  "George": [
+    "Australia",
+    "Curaçao",
+    "Paraguay",
+    "Cape Verde"
+  ],
+  "Glen": [
+    "Japan",
+    "Argentina",
+    "Iraq",
+    "Switzerland"
+  ],
+  "Hoggard": [
     "Netherlands",
+    "England",
+    "Croatia",
+    "Germany"
+  ],
+  "Robbo": [
+    "Iran",
+    "United States",
+    "Jordan",
+    "France"
+  ],
+  "Sadegh": [
     "DR Congo",
-    "Uzbekistan"
+    "Portugal",
+    "Uruguay",
+    "Turkey"
   ],
   "Liam": [
-    "Brazil",
-    "Spain",
-    "Germany",
-    "Saudi Arabia"
+    "Mexico",
+    "Egypt",
+    "Morocco",
+    "Ghana"
   ],
   "Ash": [
-    "Tunisia",
+    "Algeria",
+    "South Africa",
     "Belgium",
-    "Argentina",
-    "Morocco"
+    "Panama"
   ],
   "Our Lew": [
-    "Iran",
-    "Ecuador",
-    "Senegal",
-    "Norway"
+    "Canada",
+    "Saudi Arabia",
+    "Spain",
+    "Bosnia and Herzegovina"
   ],
   "Romeen": [
-    "Algeria",
-    "Japan",
-    "Switzerland",
-    "Colombia"
+    "Scotland",
+    "Haiti",
+    "Norway",
+    "New Zealand"
   ],
   "Hatton": [
-    "Canada",
-    "Cape Verde",
-    "Iraq",
-    "Egypt"
+    "Tunisia",
+    "Ivory Coast",
+    "Czech Republic",
+    "Qatar"
   ]
 }
