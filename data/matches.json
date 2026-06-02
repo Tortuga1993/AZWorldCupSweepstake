@@ -1,37 +1,6 @@
 {
-  "updated": "2026-06-12T21:30:00Z",
+  "updated": null,
   "competition": "WC",
-  "count": 24,
-  "_comment": "SAMPLE/DEMO DATA — placeholder fixtures (group games in progress + a sample knockout bracket) so the site shows the ticker, standings and Knockout tab before the tournament. The scheduled Action is paused so this stays put; re-enable it (and it overwrites this file with live data) before kickoff.",
-  "matches": [
-    { "id": 1, "stage": "GROUP_STAGE", "group": "A", "utcDate": "2026-06-11T16:00:00Z", "status": "FINISHED", "home": "Czech Republic", "away": "South Africa", "homeScore": 1, "awayScore": 1, "winner": "DRAW", "odds": null },
-    { "id": 2, "stage": "GROUP_STAGE", "group": "A", "utcDate": "2026-06-11T19:00:00Z", "status": "FINISHED", "home": "Mexico", "away": "South Korea", "homeScore": 2, "awayScore": 1, "winner": "HOME_TEAM", "odds": null },
-    { "id": 3, "stage": "GROUP_STAGE", "group": "E", "utcDate": "2026-06-12T13:00:00Z", "status": "FINISHED", "home": "Germany", "away": "Ecuador", "homeScore": 1, "awayScore": 2, "winner": "AWAY_TEAM", "odds": null },
-    { "id": 4, "stage": "GROUP_STAGE", "group": "H", "utcDate": "2026-06-12T16:00:00Z", "status": "FINISHED", "home": "Spain", "away": "Saudi Arabia", "homeScore": 2, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 5, "stage": "GROUP_STAGE", "group": "L", "utcDate": "2026-06-12T19:00:00Z", "status": "FINISHED", "home": "England", "away": "Panama", "homeScore": 3, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 6, "stage": "GROUP_STAGE", "group": "I", "utcDate": "2026-06-13T16:00:00Z", "status": "SCHEDULED", "home": "France", "away": "Senegal", "homeScore": null, "awayScore": null, "winner": null, "odds": { "home": 1.5, "draw": 4.0, "away": 7.0 } },
-    { "id": 7, "stage": "GROUP_STAGE", "group": "J", "utcDate": "2026-06-13T19:00:00Z", "status": "SCHEDULED", "home": "Argentina", "away": "Algeria", "homeScore": null, "awayScore": null, "winner": null, "odds": { "home": 1.35, "draw": 4.5, "away": 9.0 } },
-    { "id": 8, "stage": "GROUP_STAGE", "group": "K", "utcDate": "2026-06-14T16:00:00Z", "status": "SCHEDULED", "home": "Portugal", "away": "Colombia", "homeScore": null, "awayScore": null, "winner": null, "odds": { "home": 2.2, "draw": 3.3, "away": 3.1 } },
-
-    { "id": 9, "stage": "LAST_32", "group": null, "utcDate": "2026-07-01T16:00:00Z", "status": "FINISHED", "home": "Spain", "away": "Uruguay", "homeScore": 3, "awayScore": 1, "winner": "HOME_TEAM", "odds": null },
-    { "id": 10, "stage": "LAST_32", "group": null, "utcDate": "2026-07-01T20:00:00Z", "status": "FINISHED", "home": "Brazil", "away": "Switzerland", "homeScore": 2, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 11, "stage": "LAST_32", "group": null, "utcDate": "2026-07-02T16:00:00Z", "status": "FINISHED", "home": "England", "away": "Ghana", "homeScore": 2, "awayScore": 1, "winner": "HOME_TEAM", "odds": null },
-    { "id": 12, "stage": "LAST_32", "group": null, "utcDate": "2026-07-02T20:00:00Z", "status": "FINISHED", "home": "Germany", "away": "Mexico", "homeScore": 1, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 13, "stage": "LAST_32", "group": null, "utcDate": "2026-07-03T16:00:00Z", "status": "FINISHED", "home": "Netherlands", "away": "Japan", "homeScore": 2, "awayScore": 1, "winner": "HOME_TEAM", "odds": null },
-    { "id": 14, "stage": "LAST_32", "group": null, "utcDate": "2026-07-03T20:00:00Z", "status": "FINISHED", "home": "Belgium", "away": "Morocco", "homeScore": 3, "awayScore": 2, "winner": "HOME_TEAM", "odds": null },
-    { "id": 15, "stage": "LAST_32", "group": null, "utcDate": "2026-07-04T16:00:00Z", "status": "FINISHED", "home": "United States", "away": "Ecuador", "homeScore": 1, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 16, "stage": "LAST_32", "group": null, "utcDate": "2026-07-04T20:00:00Z", "status": "FINISHED", "home": "Croatia", "away": "Norway", "homeScore": 2, "awayScore": 1, "winner": "HOME_TEAM", "odds": null },
-
-    { "id": 17, "stage": "LAST_16", "group": null, "utcDate": "2026-07-07T16:00:00Z", "status": "FINISHED", "home": "Spain", "away": "Brazil", "homeScore": 2, "awayScore": 1, "winner": "HOME_TEAM", "odds": null },
-    { "id": 18, "stage": "LAST_16", "group": null, "utcDate": "2026-07-07T20:00:00Z", "status": "FINISHED", "home": "England", "away": "Germany", "homeScore": 2, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 19, "stage": "LAST_16", "group": null, "utcDate": "2026-07-08T16:00:00Z", "status": "FINISHED", "home": "Netherlands", "away": "Belgium", "homeScore": 1, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 20, "stage": "LAST_16", "group": null, "utcDate": "2026-07-08T20:00:00Z", "status": "FINISHED", "home": "United States", "away": "Croatia", "homeScore": 0, "awayScore": 2, "winner": "AWAY_TEAM", "odds": null },
-
-    { "id": 21, "stage": "QUARTER_FINALS", "group": null, "utcDate": "2026-07-11T16:00:00Z", "status": "FINISHED", "home": "Spain", "away": "England", "homeScore": 1, "awayScore": 0, "winner": "HOME_TEAM", "odds": null },
-    { "id": 22, "stage": "QUARTER_FINALS", "group": null, "utcDate": "2026-07-11T20:00:00Z", "status": "SCHEDULED", "home": "Netherlands", "away": "Croatia", "homeScore": null, "awayScore": null, "winner": null, "odds": null },
-
-    { "id": 23, "stage": "SEMI_FINALS", "group": null, "utcDate": "2026-07-15T20:00:00Z", "status": "SCHEDULED", "home": "Spain", "away": null, "homeScore": null, "awayScore": null, "winner": null, "odds": null },
-
-    { "id": 24, "stage": "FINAL", "group": null, "utcDate": "2026-07-19T19:00:00Z", "status": "SCHEDULED", "home": null, "away": null, "homeScore": null, "awayScore": null, "winner": null, "odds": null }
-  ]
+  "count": 0,
+  "matches": []
 }

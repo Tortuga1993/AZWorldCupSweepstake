@@ -1,75 +1,15 @@
 {
-  "_comment": "Sweepstake draw: maps each person to their 4 teams. Names not yet drawn, so 'Person 1'..'Person 12' are placeholders. Team names must exactly match those in groups.json. After the real draw, just edit the names and/or reshuffle the teams here — the site updates automatically.",
-  "Lordy": [
-    "Senegal",
-    "South Korea",
-    "Colombia",
-    "Austria"
-  ],
-  "Adair": [
-    "Brazil",
-    "Sweden",
-    "Uzbekistan",
-    "Ecuador"
-  ],
-  "George": [
-    "Australia",
-    "Curaçao",
-    "Paraguay",
-    "Cape Verde"
-  ],
-  "Glen": [
-    "Japan",
-    "Argentina",
-    "Iraq",
-    "Switzerland"
-  ],
-  "Hoggard": [
-    "Netherlands",
-    "England",
-    "Croatia",
-    "Germany"
-  ],
-  "Robbo": [
-    "Iran",
-    "United States",
-    "Jordan",
-    "France"
-  ],
-  "Sadegh": [
-    "DR Congo",
-    "Portugal",
-    "Uruguay",
-    "Turkey"
-  ],
-  "Liam": [
-    "Mexico",
-    "Egypt",
-    "Morocco",
-    "Ghana"
-  ],
-  "Ash": [
-    "Algeria",
-    "South Africa",
-    "Belgium",
-    "Panama"
-  ],
-  "Our Lew": [
-    "Canada",
-    "Saudi Arabia",
-    "Spain",
-    "Bosnia and Herzegovina"
-  ],
-  "Romeen": [
-    "Scotland",
-    "Haiti",
-    "Norway",
-    "New Zealand"
-  ],
-  "Hatton": [
-    "Tunisia",
-    "Ivory Coast",
-    "Czech Republic",
-    "Qatar"
-  ]
+  "_comment": "Sweepstake draw in progress — teams added live as they're drawn. Team names must exactly match groups.json. Each person gets 4 teams.",
+  "Lordy": ["Brazil", "Turkey", "Egypt", "Panama"],
+  "Adair": ["Germany", "Ivory Coast", "Netherlands", "Iran"],
+  "George": ["England", "Morocco", "Australia", "Curaçao"],
+  "Glen": ["Paraguay", "Japan", "Spain", "Iraq"],
+  "Hoggard": ["South Africa", "Tunisia", "Uruguay", "Croatia"],
+  "Robbo": ["Qatar", "Ecuador", "Austria", "Uzbekistan"],
+  "Sadegh": ["Scotland", "United States", "France", "Algeria"],
+  "Liam": ["Sweden", "Portugal", "DR Congo", "Ghana"],
+  "Ash": ["Czech Republic", "Bosnia and Herzegovina", "Switzerland", "Senegal"],
+  "Our Lew": ["Canada", "New Zealand", "Jordan", "Colombia"],
+  "Romeen": ["Haiti", "Belgium", "Saudi Arabia", "Norway"],
+  "Hatton": ["Mexico", "South Korea", "Cape Verde", "Argentina"]
 }
