@@ -1,11 +1,8 @@
 name: Update scores
 
 on:
-  # PAUSED for demo data: the scheduled auto-update is disabled so the sample
-  # matches/scorers in data/ stay put. Re-enable before the tournament by
-  # uncommenting the schedule below (it overwrites the demo with live data).
-  # schedule:
-  #   - cron: "*/10 * * * *"
+  schedule:
+    - cron: "*/10 * * * *"
   workflow_dispatch: {}
 
 # Allow the job to push the refreshed data/matches.json back to the repo.
