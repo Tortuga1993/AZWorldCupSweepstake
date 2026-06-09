@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-09T15:57:16.751Z",
+  "updated": "2026-06-09T20:22:28.768Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -148,7 +148,7 @@
       "stage": "GROUP_STAGE",
       "group": "E",
       "utcDate": "2026-06-14T23:00:00Z",
-      "status": "SCHEDULED",
+      "status": "TIMED",
       "matchday": 1,
       "home": "Ivory Coast",
       "away": "Ecuador",
