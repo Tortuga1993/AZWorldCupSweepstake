@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-11T16:42:08.988Z",
+  "updated": "2026-06-11T23:09:50.075Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -8,13 +8,13 @@
       "stage": "GROUP_STAGE",
       "group": "A",
       "utcDate": "2026-06-11T19:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 1,
       "home": "Mexico",
       "away": "South Africa",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 2,
+      "awayScore": 0,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
