@@ -1,10 +1,16 @@
 {
-  "updated": "2026-06-11T19:27:06.361Z",
+  "updated": "2026-06-11T20:47:42.557Z",
   "competition": "WC",
-  "count": 1,
+  "count": 2,
   "scorers": [
     {
       "player": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Raúl Jiménez",
       "team": "Mexico",
       "goals": 1,
       "assists": null
