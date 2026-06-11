@@ -20,7 +20,7 @@ To verify changes, drive the served page with a headless browser (Playwright bro
 
 ## Architecture
 
-**Data-driven rendering.** `app.js` `init()` loads six JSON files in parallel, stuffs them into a single `state` object, then calls one `render*()` per tab. Each render function writes `innerHTML` into its `#view-*` section. Tabs are plain buttons (`data-view`) toggled in `wireEvents()` by setting the `hidden` attribute on sections. Adding a tab = add a `<button data-view="x">` + `<section id="view-x">` in `index.html`, a `renderX()`, an `init()` call, and `"x"` in the `wireEvents` view list.
+**Data-driven rendering.** `app.js` `init()` loads six JSON files in parallel, stuffs them into a single `state` object, then calls one `render*()` per tab via `renderAll()`. An open page **auto-refreshes** the feed-written files (`matches.json`, `scorers.json`) every 60s (`refreshLiveData` → `renderAll`, also on tab re-focus), so live scores, standings and the Shittest table update without a reload. Standings/conceded count any match with a score regardless of status, so in-play scores show "as it stands". Each render function writes `innerHTML` into its `#view-*` section. Tabs are plain buttons (`data-view`) toggled in `wireEvents()` by setting the `hidden` attribute on sections. Adding a tab = add a `<button data-view="x">` + `<section id="view-x">` in `index.html`, a `renderX()`, an `init()` call, and `"x"` in the `wireEvents` view list.
 
 **The data files (`data/`)** — all hand-editable JSON:
 - `groups.json` — the 12 groups, teams, flag emoji. The source of truth for team names; everything else must match these names.

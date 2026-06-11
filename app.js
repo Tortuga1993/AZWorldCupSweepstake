@@ -206,14 +206,8 @@ function matchContext(m) {
   return prettyStage(m.stage);
 }
 
-// A random obscure fact for a country (from data/facts.json), or null.
-function randFact(name) {
-  const arr = state.facts[name];
-  return Array.isArray(arr) && arr.length ? arr[Math.floor(Math.random() * arr.length)] : null;
-}
-
 // A rich match card (used on the Fixtures tab): teams + owners, score or
-// kickoff, 1X2 odds when available, and an obscure fact per country.
+// kickoff, and 1X2 odds when available.
 function matchCard(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
@@ -236,12 +230,6 @@ function matchCard(m) {
        </div>`
     : "";
 
-  const fh = randFact(hn), fa = randFact(an);
-  const factsHtml = (fh || fa) ? `<div class="nm-facts">
-    ${fh ? `<p title="${hn}: ${fh}"><span class="ff">${h ? h.flag : "🏳️"}</span><b>${hn}</b> ${fh}</p>` : ""}
-    ${fa ? `<p title="${an}: ${fa}"><span class="ff">${a ? a.flag : "🏳️"}</span><b>${an}</b> ${fa}</p>` : ""}
-  </div>` : "";
-
   return `
     <div class="nmx" data-team="${hn}" data-team2="${an}" data-player="${state.ownerOf[hn] || ""}">
       <div class="nm-head"><span class="nm-ctx">${matchContext(m)}</span><span>${right}</span></div>
@@ -255,11 +243,10 @@ function matchCard(m) {
         </div>
       </div>
       ${oddsHtml}
-      ${factsHtml}
     </div>`;
 }
 
-// "Next matches" tab — every game on the next day that has fixtures.
+// Compact fixture row used inside group cards and the knockout bracket.
 function fixtureRow(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hf = h ? h.flag : "🏳️", af = a ? a.flag : "🏳️";
@@ -281,7 +268,7 @@ function fixtureRow(m) {
 // ---- Views --------------------------------------------------------------
 function renderGroups(standings) {
   const el = document.getElementById("view-groups");
-  el.innerHTML = `<div class="grid">${
+  el.innerHTML = `<p class="view-caption">Group tables — as it stands</p><div class="grid">${
     Object.entries(standings).map(([g, table]) => {
       const fixtures = state.matches
         .filter((m) => isGroupStage(m) && (resolveRoster(m.home)?.group === g || resolveRoster(m.away)?.group === g))
@@ -603,6 +590,32 @@ function wireEvents() {
   });
 }
 
+// Re-render everything that depends on live data (called on load and each poll).
+function renderAll() {
+  const standings = computeStandings();
+  renderFixtures();
+  renderGroups(standings);
+  renderKnockout();
+  renderPlayers(standings);
+  renderScorers();
+  renderShittest();
+  renderStatus();
+  applyHighlight(); // re-apply the active player filter after the DOM is rebuilt
+}
+
+// Poll the feed-written files so an open page updates live during games.
+async function refreshLiveData() {
+  try {
+    const [matchData, scorerData] = await Promise.all([
+      loadJSON("data/matches.json").catch(() => null),
+      loadJSON("data/scorers.json").catch(() => null),
+    ]);
+    if (matchData) { state.matches = matchData.matches || []; state.updated = matchData.updated || null; }
+    if (scorerData) state.scorers = scorerData.scorers || [];
+    renderAll();
+  } catch { /* keep showing the last good data */ }
+}
+
 async function init() {
   try {
     const [groups, assignments, matchData, oddsData, scorerData, factData] = await Promise.all([
@@ -622,16 +635,13 @@ async function init() {
     state.facts = factData || {};
 
     const players = buildIndexes();
-    const standings = computeStandings();
-    renderFixtures();
-    renderGroups(standings);
-    renderKnockout();
-    renderPlayers(standings);
-    renderScorers();
-    renderShittest();
     renderLegend(players);
-    renderStatus();
     wireEvents();
+    renderAll();
+
+    // Live auto-refresh every 60s; pause when the tab is hidden to save data.
+    setInterval(() => { if (!document.hidden) refreshLiveData(); }, 60000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshLiveData(); });
   } catch (err) {
     document.querySelector("main").innerHTML =
       `<p class="error">Couldn't load data (${err.message}).<br>

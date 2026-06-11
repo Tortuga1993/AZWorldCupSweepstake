@@ -231,6 +231,10 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
 .empty { padding: 32px; text-align: center; color: var(--muted); }
 
 .status { color: var(--muted); font-size: 0.85rem; margin: 0 0 16px; }
+.view-caption {
+  font-family: var(--font-head); font-weight: 600; font-size: 0.78rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--muted); text-align: center; margin: 0 0 14px;
+}
 
 /* Next match banner — compact */
 .next-match {
