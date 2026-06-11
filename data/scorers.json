@@ -1,6 +1,13 @@
 {
-  "updated": null,
+  "updated": "2026-06-11T19:27:06.361Z",
   "competition": "WC",
-  "count": 0,
-  "scorers": []
+  "count": 1,
+  "scorers": [
+    {
+      "player": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 1,
+      "assists": null
+    }
+  ]
 }
