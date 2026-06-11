@@ -28,7 +28,7 @@ To verify changes, drive the served page with a headless browser (Playwright bro
 - `groups.json` — the 12 groups, teams, flag emoji. The source of truth for team names; everything else must match these names.
 - `assignments.json` — the sweepstake: player name → their 4 team names. Hand-edited (e.g. during the live draw). Keys starting with `_` (like `_comment`) are ignored everywhere via `k.startsWith("_")`.
 - `matches.json` / `scorers.json` — **written by the GitHub Action**, not by hand. Treat as machine-owned.
-- `odds.json` — manual decimal outright odds per team; powers the "% to win" on the Teams tab.
+- `odds.json` — decimal outright odds per team; powers the "% to win" on the Teams tab. **Auto-updated** by the Action via The Odds API (`scripts/fetch-odds.mjs`), or hand-edited if no key is set. `computeWinProb` resolves these keys through `ALIASES`, so feed names ("USA", "Czechia") are fine.
 - `facts.json` — country → array of trivia strings (random one shown on Fixtures cards).
 
 **Team-name normalisation is critical.** The football-data.org feed uses different names than `groups.json` (e.g. "Czechia", "Korea Republic", "Cape Verde Islands", "Congo DR"). `ALIASES` + `canon()` + `resolveRoster()` map any incoming name to the roster team. **When the live feed introduces a new name variant that doesn't resolve, add it to `ALIASES`** — otherwise that team silently loses its flag/owner/standings.
@@ -46,7 +46,7 @@ To verify changes, drive the served page with a headless browser (Playwright bro
 `.github/workflows/update-scores.yml` runs `scripts/fetch-scores.mjs` on a cron, which calls football-data.org (`FOOTBALL_DATA_TOKEN` repo secret, competition code `WC`) and writes `data/matches.json` + `data/scorers.json`, committing only when content (ignoring the `updated` timestamp) changed. GitHub Pages then redeploys.
 
 - The schedule is **live** (cron every 10 min). It overwrites `matches.json`/`scorers.json` every run — hand-edited demo data in those two files will be wiped within minutes, so the two are mutually exclusive. To pause, comment out the `cron:` line.
-- The free football-data.org tier returns **no odds** (the `match.odds` 1X2 field is paywalled) and has **no outright "win the tournament" market at all** — that's why `odds.json` is manual.
+- The free football-data.org tier returns **no odds** at all. Outright "win the tournament" odds come from a separate source: `scripts/fetch-odds.mjs` calls **The Odds API** (secret `THE_ODDS_API_KEY`) in the same workflow. It self-throttles (only refetches when `odds.json._updated` is older than `ODDS_MIN_HOURS`, default 6) to stay under the free-tier monthly cap, auto-discovers the World Cup winner sport key, and no-ops cleanly if the key is unset.
 
 ## Conventions
 

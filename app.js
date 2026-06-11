@@ -412,7 +412,9 @@ function computeWinProb() {
   const raw = {}; let total = 0;
   for (const [t, o] of Object.entries(state.odds)) {
     if (t.startsWith("_") || !(o > 0)) continue;
-    raw[t] = 1 / o; total += raw[t];
+    const r = resolveRoster(t); // map feed/odds names (USA, Czechia, …) to roster names
+    if (!r) continue;
+    raw[r.name] = 1 / o; total += raw[r.name];
   }
   const prob = {};
   if (total) for (const t in raw) prob[t] = raw[t] / total;
