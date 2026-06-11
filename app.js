@@ -21,11 +21,18 @@ const ALIASES = {
   "cabo verde": "cape verde",
   "cape verde islands": "cape verde",
   "congo dr": "dr congo",
+  "ir iran": "iran",
+  "bosnia & herzegovina": "bosnia and herzegovina",
   "dr congo": "dr congo",
   "bosnia-herzegovina": "bosnia and herzegovina",
 };
 
 const STAGE_ORDER = ["LAST_32", "ROUND_OF_32", "LAST_16", "ROUND_OF_16", "QUARTER_FINALS", "SEMI_FINALS", "THIRD_PLACE", "FINAL"];
+
+// ESPN's public scoreboard — CORS-open, no key, has live in-play scores.
+// We overlay it onto the schedule client-side (the football-data free tier
+// doesn't provide live scores). Range covers the whole tournament.
+const ESPN_SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719";
 
 const state = {
   groups: {},          // { A: [{name, flag}], ... }
@@ -216,7 +223,7 @@ function matchCard(m) {
   const time = m.utcDate
     ? new Date(m.utcDate).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })
     : "TBD";
-  const right = live ? `<span class="nm-live">● Live</span>` : (played ? "FT" : time);
+  const right = live ? `<span class="nm-live">● ${m.liveClock || "Live"}</span>` : (played ? "FT" : time);
   const middle = played
     ? `<span class="nm-score ${live ? "live" : ""}">${m.homeScore}–${m.awayScore}</span>`
     : `<span class="nm-vs">v</span>`;
@@ -603,7 +610,51 @@ function renderAll() {
   applyHighlight(); // re-apply the active player filter after the DOM is rebuilt
 }
 
-// Poll the feed-written files so an open page updates live during games.
+// Overlay ESPN live scores/status onto state.matches (matched by team pair).
+function mergeEspnScores(events) {
+  const idx = new Map();
+  for (const m of state.matches) {
+    const h = resolveRoster(m.home), a = resolveRoster(m.away);
+    if (h && a) idx.set([h.name, a.name].sort().join("|"), m);
+  }
+  let touched = 0;
+  for (const e of events) {
+    const c = e.competitions?.[0];
+    const st = e.status?.type?.state;
+    if (!c || st === "pre") continue; // not started → nothing to overlay
+    const eh = c.competitors?.find((x) => x.homeAway === "home");
+    const ea = c.competitors?.find((x) => x.homeAway === "away");
+    const rh = resolveRoster(eh?.team?.displayName || eh?.team?.name);
+    const ra = resolveRoster(ea?.team?.displayName || ea?.team?.name);
+    if (!rh || !ra) continue;
+    const m = idx.get([rh.name, ra.name].sort().join("|"));
+    if (!m) continue;
+    const hs = parseInt(eh.score, 10), as = parseInt(ea.score, 10);
+    if (Number.isNaN(hs) || Number.isNaN(as)) continue;
+    const sameOrient = resolveRoster(m.home)?.name === rh.name;
+    m.homeScore = sameOrient ? hs : as;
+    m.awayScore = sameOrient ? as : hs;
+    m.status = st === "in" ? "IN_PLAY" : (st === "post" ? "FINISHED" : m.status);
+    m.liveClock = st === "in" ? (e.status?.displayClock || "") : null;
+    if (st === "post") {
+      m.winner = m.homeScore > m.awayScore ? "HOME_TEAM" : (m.awayScore > m.homeScore ? "AWAY_TEAM" : "DRAW");
+    }
+    touched++;
+  }
+  return touched;
+}
+
+async function fetchLiveScores() {
+  try {
+    const res = await fetch(ESPN_SCOREBOARD, { cache: "no-store" });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (mergeEspnScores(data.events || [])) state.updated = new Date().toISOString();
+  } catch { /* keep last good data if ESPN is unreachable */ }
+}
+
+// Poll on an interval so an open page updates live during games: re-read the
+// committed schedule/scorers, then overlay live ESPN scores on top.
 async function refreshLiveData() {
   try {
     const [matchData, scorerData] = await Promise.all([
@@ -612,6 +663,7 @@ async function refreshLiveData() {
     ]);
     if (matchData) { state.matches = matchData.matches || []; state.updated = matchData.updated || null; }
     if (scorerData) state.scorers = scorerData.scorers || [];
+    await fetchLiveScores();
     renderAll();
   } catch { /* keep showing the last good data */ }
 }
@@ -639,8 +691,9 @@ async function init() {
     wireEvents();
     renderAll();
 
-    // Live auto-refresh every 60s; pause when the tab is hidden to save data.
-    setInterval(() => { if (!document.hidden) refreshLiveData(); }, 60000);
+    // Pull live ESPN scores immediately, then auto-refresh every 30s.
+    fetchLiveScores().then(renderAll);
+    setInterval(() => { if (!document.hidden) refreshLiveData(); }, 30000);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshLiveData(); });
   } catch (err) {
     document.querySelector("main").innerHTML =
