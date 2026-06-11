@@ -43,7 +43,7 @@ To verify changes, drive the served page with a headless browser (Playwright bro
 
 `.github/workflows/update-scores.yml` runs `scripts/fetch-scores.mjs` on a cron, which calls football-data.org (`FOOTBALL_DATA_TOKEN` repo secret, competition code `WC`) and writes `data/matches.json` + `data/scorers.json`, committing only when content (ignoring the `updated` timestamp) changed. GitHub Pages then redeploys.
 
-- The schedule is **currently paused** (the `cron:` is commented out in the workflow). Re-enable by uncommenting it. When live, it overwrites `matches.json`/`scorers.json` every run — hand-edited demo data in those two files will be wiped within minutes, so the two are mutually exclusive.
+- The schedule is **live** (cron every 10 min). It overwrites `matches.json`/`scorers.json` every run — hand-edited demo data in those two files will be wiped within minutes, so the two are mutually exclusive. To pause, comment out the `cron:` line.
 - The free football-data.org tier returns **no odds** (the `match.odds` 1X2 field is paywalled) and has **no outright "win the tournament" market at all** — that's why `odds.json` is manual.
 
 ## Conventions

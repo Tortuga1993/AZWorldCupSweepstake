@@ -2,6 +2,8 @@ name: Update scores
 
 on:
   schedule:
+    # Every 10 minutes during the tournament. GitHub may delay/skip scheduled
+    # runs under load, and only runs schedules on the default branch.
     - cron: "*/10 * * * *"
   workflow_dispatch: {}
 
