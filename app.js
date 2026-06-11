@@ -237,6 +237,13 @@ function matchCard(m) {
        </div>`
     : "";
 
+  const goal = (g) => `<span class="ng">⚽ ${g.name} ${g.minute}${g.pen ? " (P)" : ""}${g.og ? " (OG)" : ""}</span>`;
+  const goals = m.goals || [];
+  const goalsHtml = goals.length ? `<div class="nm-goals">
+      <div class="ng-side ng-home">${goals.filter((g) => g.side === "home").map(goal).join("")}</div>
+      <div class="ng-side ng-away">${goals.filter((g) => g.side === "away").map(goal).join("")}</div>
+    </div>` : "";
+
   return `
     <div class="nmx" data-team="${hn}" data-team2="${an}" data-player="${state.ownerOf[hn] || ""}">
       <div class="nm-head"><span class="nm-ctx">${matchContext(m)}</span><span>${right}</span></div>
@@ -249,6 +256,7 @@ function matchCard(m) {
           <span class="nm-flag">${a ? a.flag : "🏳️"}</span><span class="nm-name">${an}</span>${ownerChip(an)}
         </div>
       </div>
+      ${goalsHtml}
       ${oddsHtml}
     </div>`;
 }
@@ -639,6 +647,17 @@ function mergeEspnScores(events) {
     if (st === "post") {
       m.winner = m.homeScore > m.awayScore ? "HOME_TEAM" : (m.awayScore > m.homeScore ? "AWAY_TEAM" : "DRAW");
     }
+    // Goalscorers + minute, tagged to the home/away side of our match.
+    const mHome = resolveRoster(m.home)?.name;
+    const teamNameById = {};
+    for (const x of c.competitors) teamNameById[x.team?.id] = resolveRoster(x.team?.displayName || x.team?.name)?.name;
+    m.goals = (c.details || []).filter((d) => d.scoringPlay).map((d) => ({
+      name: d.athletesInvolved?.[0]?.displayName || "Goal",
+      minute: d.clock?.displayValue || "",
+      side: teamNameById[d.team?.id] === mHome ? "home" : "away",
+      pen: /penalt/i.test(d.type?.text || ""),
+      og: /own goal/i.test(d.type?.text || ""),
+    }));
     touched++;
   }
   return touched;

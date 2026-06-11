@@ -283,6 +283,13 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
   border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 10px 14px;
 }
 .nmx.is-dim { opacity: 0.25; }
+.nm-goals {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;
+  padding-top: 8px; border-top: 1px solid var(--border);
+}
+.ng-side { display: flex; flex-direction: column; gap: 2px; }
+.ng-side.ng-away { text-align: right; align-items: flex-end; }
+.ng { font-size: 0.72rem; color: var(--muted); }
 
 /* Player win-% bar + per-team % */
 .pcard-bar { margin: 11px 16px; }
