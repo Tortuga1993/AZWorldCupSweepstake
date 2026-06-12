@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-12T06:19:34.792Z",
+  "updated": "2026-06-12T21:02:30.082Z",
   "competition": "WC",
-  "count": 5,
+  "count": 7,
   "scorers": [
     {
       "player": "Julián Quiñones",
@@ -30,6 +30,18 @@
     {
       "player": "Hyun-Gyu Oh",
       "team": "South Korea",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Jovo Lukić",
+      "team": "Bosnia-Herzegovina",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Cyle Larin",
+      "team": "Canada",
       "goals": 1,
       "assists": null
     }
