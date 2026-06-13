@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-12T22:44:44.819Z",
+  "updated": "2026-06-13T04:49:51.128Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -50,13 +50,13 @@
       "stage": "GROUP_STAGE",
       "group": "D",
       "utcDate": "2026-06-13T01:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 1,
       "home": "United States",
       "away": "Paraguay",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 4,
+      "awayScore": 1,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
