@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-13T12:18:10.211Z",
+  "updated": "2026-06-13T20:38:42.698Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -64,13 +64,13 @@
       "stage": "GROUP_STAGE",
       "group": "B",
       "utcDate": "2026-06-13T19:00:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": 1,
       "home": "Qatar",
       "away": "Switzerland",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 0,
+      "awayScore": 1,
+      "winner": "AWAY_TEAM",
       "odds": null
     },
     {

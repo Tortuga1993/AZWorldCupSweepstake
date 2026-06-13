@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-13T04:49:51.279Z",
+  "updated": "2026-06-13T20:38:42.908Z",
   "competition": "WC",
-  "count": 10,
+  "count": 11,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -60,6 +60,12 @@
     {
       "player": "Gio Reyna",
       "team": "United States",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Breel Embolo",
+      "team": "Switzerland",
       "goals": 1,
       "assists": null
     }
