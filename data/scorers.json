@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-13T21:50:52.830Z",
+  "updated": "2026-06-13T23:07:15.322Z",
   "competition": "WC",
-  "count": 12,
+  "count": 14,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -72,6 +72,18 @@
     {
       "player": "Boualem Khoukhi",
       "team": "Qatar",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Ismael Saibari",
+      "team": "Morocco",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Vinicius Junior",
+      "team": "Brazil",
       "goals": 1,
       "assists": null
     }
