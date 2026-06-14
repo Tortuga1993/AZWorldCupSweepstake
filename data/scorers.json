@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-14T20:01:32.478Z",
+  "updated": "2026-06-14T21:36:30.501Z",
   "competition": "WC",
-  "count": 24,
+  "count": 27,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -146,6 +146,24 @@
       "team": "Germany",
       "goals": 1,
       "assists": 2
+    },
+    {
+      "player": "Virgil van Dijk",
+      "team": "Netherlands",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Keito Nakamura",
+      "team": "Japan",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Crysencio Summerville",
+      "team": "Netherlands",
+      "goals": 1,
+      "assists": null
     }
   ]
 }
