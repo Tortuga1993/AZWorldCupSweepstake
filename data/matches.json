@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T05:13:26.339Z",
+  "updated": "2026-06-14T08:51:28.708Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -106,11 +106,11 @@
       "stage": "GROUP_STAGE",
       "group": "D",
       "utcDate": "2026-06-14T04:00:00Z",
-      "status": "IN_PLAY",
+      "status": "FINISHED",
       "matchday": 1,
       "home": "Australia",
       "away": "Turkey",
-      "homeScore": 1,
+      "homeScore": 2,
       "awayScore": 0,
       "winner": "HOME_TEAM",
       "odds": null

@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-14T05:13:26.542Z",
+  "updated": "2026-06-14T08:51:28.931Z",
   "competition": "WC",
-  "count": 16,
+  "count": 17,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -95,6 +95,12 @@
     },
     {
       "player": "Nestor Irankunda",
+      "team": "Australia",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Connor Metcalfe",
       "team": "Australia",
       "goals": 1,
       "assists": null
