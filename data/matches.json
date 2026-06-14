@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T21:36:30.331Z",
+  "updated": "2026-06-14T22:49:42.750Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -134,13 +134,13 @@
       "stage": "GROUP_STAGE",
       "group": "F",
       "utcDate": "2026-06-14T20:00:00Z",
-      "status": "IN_PLAY",
+      "status": "FINISHED",
       "matchday": 1,
       "home": "Netherlands",
       "away": "Japan",
       "homeScore": 2,
-      "awayScore": 1,
-      "winner": "HOME_TEAM",
+      "awayScore": 2,
+      "winner": "DRAW",
       "odds": null
     },
     {

@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-14T21:36:30.501Z",
+  "updated": "2026-06-14T22:49:42.970Z",
   "competition": "WC",
-  "count": 27,
+  "count": 28,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -162,6 +162,12 @@
     {
       "player": "Crysencio Summerville",
       "team": "Netherlands",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Daichi Kamada",
+      "team": "Japan",
       "goals": 1,
       "assists": null
     }
