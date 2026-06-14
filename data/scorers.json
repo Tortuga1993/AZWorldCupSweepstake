@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-14T08:51:28.931Z",
+  "updated": "2026-06-14T18:16:56.715Z",
   "competition": "WC",
-  "count": 17,
+  "count": 22,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -102,6 +102,36 @@
     {
       "player": "Connor Metcalfe",
       "team": "Australia",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Felix Kalu Nmecha",
+      "team": "Germany",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Livano Comenencia",
+      "team": "Curaçao",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Nico Schlotterbeck",
+      "team": "Germany",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Kai Havertz",
+      "team": "Germany",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Jamal Musiala",
+      "team": "Germany",
       "goals": 1,
       "assists": null
     }

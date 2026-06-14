@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-14T08:51:28.708Z",
+  "updated": "2026-06-14T18:16:56.546Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -120,13 +120,13 @@
       "stage": "GROUP_STAGE",
       "group": "E",
       "utcDate": "2026-06-14T17:00:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": 1,
       "home": "Germany",
       "away": "Curaçao",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 4,
+      "awayScore": 1,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
