@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-13T23:07:15.146Z",
+  "updated": "2026-06-14T00:19:59.464Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -78,7 +78,7 @@
       "stage": "GROUP_STAGE",
       "group": "C",
       "utcDate": "2026-06-13T22:00:00Z",
-      "status": "PAUSED",
+      "status": "FINISHED",
       "matchday": 1,
       "home": "Brazil",
       "away": "Morocco",
