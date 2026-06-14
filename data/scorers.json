@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-13T23:07:15.322Z",
+  "updated": "2026-06-14T05:13:26.542Z",
   "competition": "WC",
-  "count": 14,
+  "count": 16,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -84,6 +84,18 @@
     {
       "player": "Vinicius Junior",
       "team": "Brazil",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "John McGinn",
+      "team": "Scotland",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Nestor Irankunda",
+      "team": "Australia",
       "goals": 1,
       "assists": null
     }
