@@ -1,7 +1,7 @@
 {
-  "updated": "2026-06-14T22:49:42.970Z",
+  "updated": "2026-06-15T05:17:46.724Z",
   "competition": "WC",
-  "count": 28,
+  "count": 30,
   "scorers": [
     {
       "player": "Folarin Balogun",
@@ -12,6 +12,12 @@
     {
       "player": "Kai Havertz",
       "team": "Germany",
+      "goals": 2,
+      "assists": null
+    },
+    {
+      "player": "Yasin Ayari",
+      "team": "Sweden",
       "goals": 2,
       "assists": null
     },
@@ -168,6 +174,12 @@
     {
       "player": "Daichi Kamada",
       "team": "Japan",
+      "goals": 1,
+      "assists": null
+    },
+    {
+      "player": "Amad Diallo",
+      "team": "Ivory Coast",
       "goals": 1,
       "assists": null
     }
