@@ -435,3 +435,22 @@ h1, h2, .nm-name, .nm-score, .rank { font-family: var(--font-head); }
   font-size: 0.7rem; color: var(--muted); font-weight: 700;
   border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px;
 }
+.sidebet-card { background: var(--card-bg, #1e2330); border: 1px solid var(--border, #2e3347); border-radius: 12px; padding: 1.2rem 1.4rem; margin: 1rem 0; }
+.sidebet-header { font-size: 1.1rem; font-weight: 700; margin-bottom: .8rem; display: flex; align-items: center; gap: .5rem; }
+.sidebet-row { display: flex; justify-content: space-between; padding: .35rem 0; border-bottom: 1px solid var(--border, #2e3347); font-size: .92rem; }
+.sidebet-row:last-child { border-bottom: none; }
+.sidebet-label { color: var(--text-muted, #8892a4); }
+.sidebet-value { font-weight: 600; }
+.sidebet-intro { color: var(--text-muted, #8892a4); margin-bottom: 1rem; font-size: .95rem; }
+.sidebet-pending { text-align: center; padding: 2.5rem 1rem; color: var(--text-muted, #8892a4); }
+.sidebet-current-title, .sidebet-list-title { font-size: .85rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted, #8892a4); margin: 1.4rem 0 .4rem; }
+.sidebet-list { background: var(--card-bg, #1e2330); border: 1px solid var(--border, #2e3347); border-radius: 10px; overflow: hidden; }
+.sidebet-list-item { padding: .6rem 1rem; font-size: .9rem; border-bottom: 1px solid var(--border, #2e3347); }
+.sidebet-list-item:last-child { border-bottom: none; }
+.sidebet-progress-wrap { margin: 1rem 0 1.4rem; }
+.sidebet-progress-bar { height: 18px; background: var(--border, #2e3347); border-radius: 9px; overflow: hidden; }
+.sidebet-progress-fill { height: 100%; background: #fbbf24; border-radius: 9px; transition: width .4s ease; }
+.sidebet-progress-fill.done { background: #34d399; }
+.sidebet-progress-label { text-align: right; font-size: .85rem; color: var(--text-muted, #8892a4); margin-top: .3rem; }
+.sidebet-winner { font-size: 1.1rem; font-weight: 700; text-align: center; margin: 1rem 0; color: #34d399; }
+
