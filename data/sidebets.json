@@ -1,0 +1,12 @@
+{
+  "ownGoals": [],
+  "redCards": [],
+  "mostConceded": [],
+  "yellowCards": {
+    "target": 100,
+    "current": 0,
+    "leader": null,
+    "leaderTeam": null,
+    "leaderMatch": null
+  }
+}
