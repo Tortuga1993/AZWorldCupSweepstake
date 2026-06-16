@@ -7,7 +7,6 @@ const PALETTE = [
   "#a855f7", "#ec4899", "#f43f5e", "#84cc16",
 ];
 
-// football-data.org and roster names don't always match — map variants to roster names.
 const ALIASES = {
   "korea republic": "south korea",
   "korea, republic of": "south korea",
@@ -29,26 +28,22 @@ const ALIASES = {
 
 const STAGE_ORDER = ["LAST_32", "ROUND_OF_32", "LAST_16", "ROUND_OF_16", "QUARTER_FINALS", "SEMI_FINALS", "THIRD_PLACE", "FINAL"];
 
-// ESPN's public scoreboard — CORS-open, no key, has live in-play scores.
-// We overlay it onto the schedule client-side (the football-data free tier
-// doesn't provide live scores). Range covers the whole tournament.
 const ESPN_SCOREBOARD = "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard?dates=20260611-20260719";
 
 const state = {
-  groups: {},          // { A: [{name, flag}], ... }
-  assignments: {},     // { "Person 1": [team, ...], ... }
-  matches: [],         // normalised match objects
-  odds: {},            // { team: decimalOdds }
-  scorers: [],         // [{ player, team, goals, assists }]
-  facts: {},           // { country: [fact, ...] }
+  groups: {},
+  assignments: {},
+  matches: [],
+  odds: {},
+  scorers: [],
+  facts: {},
   updated: null,
-  ownerOf: {},         // team name -> player name
-  colorOf: {},         // player name -> colour
-  rosterByCanon: {},   // canonical name -> { name, flag, group }
+  ownerOf: {},
+  colorOf: {},
+  rosterByCanon: {},
   activePlayer: null,
 };
 
-// Theme switcher — applies immediately, independent of the data load.
 (function initThemeSwitch() {
   const sw = document.getElementById("theme-switch");
   if (!sw) return;
@@ -60,7 +55,7 @@ const state = {
     if (!btn) return;
     const t = btn.dataset.theme;
     document.documentElement.dataset.theme = t;
-    try { localStorage.setItem("wc-theme", t); } catch (_) { /* ignore */ }
+    try { localStorage.setItem("wc-theme", t); } catch (_) {}
     mark(t);
   });
 })();
@@ -91,14 +86,11 @@ function buildIndexes() {
   return players;
 }
 
-// hex -> rgba string with given alpha
 function hexA(hex, a) {
   const n = parseInt(hex.slice(1), 16);
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`;
 }
 
-// Decimal odds -> tidy fractional odds, e.g. 1.5 -> "1/2", 7 -> "6/1", 2.75 -> "7/4".
-// Uses a best rational approximation with a small denominator (bookmaker style).
 function toFraction(dec) {
   if (!(dec > 1)) return "—";
   const x = dec - 1;
@@ -122,7 +114,6 @@ function ownerChip(team) {
     <span class="dot" style="background:${c}"></span>${owner}</span>`;
 }
 
-// ---- Standings ----------------------------------------------------------
 function computeStandings() {
   const tables = {};
   for (const [g, teams] of Object.entries(state.groups)) {
@@ -151,12 +142,9 @@ function computeStandings() {
   return sorted;
 }
 
-// Set of teams not yet eliminated. Teams stay alive until they are *genuinely*
-// out — we never project eliminations from an unfinished (e.g. all-0-0) table.
 function aliveSet(standings) {
   const alive = new Set();
   for (const arr of Object.values(standings)) for (const t of arr) alive.add(t.name);
-
   const ko = state.matches.filter((m) => !isGroupStage(m));
   const koTeams = new Set();
   for (const m of ko) {
@@ -165,18 +153,14 @@ function aliveSet(standings) {
     if (a) koTeams.add(a.name);
   }
   const koExists = ko.length > 0;
-
-  // Group eliminations only once every team in the group has played all 3 games.
   for (const arr of Object.values(standings)) {
     if (!arr.every((t) => t.P >= 3)) continue;
     arr.forEach((t, i) => {
       const pos = i + 1;
-      if (pos === 4) alive.delete(t.name);                                   // 4th can never advance
-      else if (pos === 3 && koExists && !koTeams.has(t.name)) alive.delete(t.name); // 3rd that missed the cut
+      if (pos === 4) alive.delete(t.name);
+      else if (pos === 3 && koExists && !koTeams.has(t.name)) alive.delete(t.name);
     });
   }
-
-  // Knockout losers are out.
   for (const m of ko) {
     if (m.status !== "FINISHED") continue;
     const h = resolveRoster(m.home), a = resolveRoster(m.away);
@@ -191,18 +175,10 @@ function aliveSet(standings) {
   return alive;
 }
 
-// ---- Match formatting ---------------------------------------------------
 function fmtDate(iso) {
   if (!iso) return "TBD";
   const d = new Date(iso);
   return d.toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
-}
-
-function fmtDateFull(iso) {
-  if (!iso) return "Date TBD";
-  return new Date(iso).toLocaleString(undefined, {
-    weekday: "short", month: "short", day: "numeric", hour: "2-digit", minute: "2-digit",
-  });
 }
 
 function matchContext(m) {
@@ -213,8 +189,6 @@ function matchContext(m) {
   return prettyStage(m.stage);
 }
 
-// A rich match card (used on the Fixtures tab): teams + owners, score or
-// kickoff, and 1X2 odds when available.
 function matchCard(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hn = h ? h.name : (m.home || "TBD"), an = a ? a.name : (m.away || "TBD");
@@ -227,41 +201,25 @@ function matchCard(m) {
   const middle = played
     ? `<span class="nm-score ${live ? "live" : ""}">${m.homeScore}–${m.awayScore}</span>`
     : `<span class="nm-vs">v</span>`;
-
   const o = m.odds;
   const oddsHtml = o && typeof o.home === "number"
-    ? `<div class="nm-odds" title="Match odds (home / draw / away)">
-         <span class="odd"><b>1</b> ${toFraction(o.home)}</span>
-         <span class="odd"><b>X</b> ${toFraction(o.draw)}</span>
-         <span class="odd"><b>2</b> ${toFraction(o.away)}</span>
-       </div>`
+    ? `<div class="nm-odds"><span class="odd"><b>1</b> ${toFraction(o.home)}</span><span class="odd"><b>X</b> ${toFraction(o.draw)}</span><span class="odd"><b>2</b> ${toFraction(o.away)}</span></div>`
     : "";
-
   const goal = (g) => `<span class="ng">⚽ ${g.name} ${g.minute}${g.pen ? " (P)" : ""}${g.og ? " (OG)" : ""}</span>`;
   const goals = m.goals || [];
-  const goalsHtml = goals.length ? `<div class="nm-goals">
-      <div class="ng-side ng-home">${goals.filter((g) => g.side === "home").map(goal).join("")}</div>
-      <div class="ng-side ng-away">${goals.filter((g) => g.side === "away").map(goal).join("")}</div>
-    </div>` : "";
-
+  const goalsHtml = goals.length ? `<div class="nm-goals"><div class="ng-side ng-home">${goals.filter((g) => g.side === "home").map(goal).join("")}</div><div class="ng-side ng-away">${goals.filter((g) => g.side === "away").map(goal).join("")}</div></div>` : "";
   return `
     <div class="nmx" data-team="${hn}" data-team2="${an}" data-player="${state.ownerOf[hn] || ""}">
       <div class="nm-head"><span class="nm-ctx">${matchContext(m)}</span><span>${right}</span></div>
       <div class="nm-teams">
-        <div class="nm-team">
-          <span class="nm-flag">${h ? h.flag : "🏳️"}</span><span class="nm-name">${hn}</span>${ownerChip(hn)}
-        </div>
+        <div class="nm-team"><span class="nm-flag">${h ? h.flag : "🏳️"}</span><span class="nm-name">${hn}</span>${ownerChip(hn)}</div>
         ${middle}
-        <div class="nm-team away">
-          <span class="nm-flag">${a ? a.flag : "🏳️"}</span><span class="nm-name">${an}</span>${ownerChip(an)}
-        </div>
+        <div class="nm-team away"><span class="nm-flag">${a ? a.flag : "🏳️"}</span><span class="nm-name">${an}</span>${ownerChip(an)}</div>
       </div>
-      ${goalsHtml}
-      ${oddsHtml}
+      ${goalsHtml}${oddsHtml}
     </div>`;
 }
 
-// Compact fixture row used inside group cards and the knockout bracket.
 function fixtureRow(m) {
   const h = resolveRoster(m.home), a = resolveRoster(m.away);
   const hf = h ? h.flag : "🏳️", af = a ? a.flag : "🏳️";
@@ -280,7 +238,6 @@ function fixtureRow(m) {
     </div>`;
 }
 
-// ---- Views --------------------------------------------------------------
 function renderGroups(standings) {
   const el = document.getElementById("view-groups");
   el.innerHTML = `<p class="view-caption">Group tables — as it stands</p><div class="grid">${
@@ -291,22 +248,16 @@ function renderGroups(standings) {
       return `
       <div class="card">
         <div class="card-head"><h2>Group ${g}</h2><span class="sub">P · GD · Pts</span></div>
-        <table class="standings">
-          <tbody>
-          ${table.map((t, i) => `
-            <tr class="srow pos-${i + 1}" data-team="${t.name}" data-player="${state.ownerOf[t.name] || ""}">
-              <td class="pos">${i + 1}</td>
-              <td class="teamcell">
-                <span class="flag">${t.flag}</span>
-                <span class="team">${t.name}</span>
-                ${ownerChip(t.name)}
-              </td>
-              <td class="num">${t.P}</td>
-              <td class="num">${(t.GF - t.GA) > 0 ? "+" : ""}${t.GF - t.GA}</td>
-              <td class="num pts">${t.Pts}</td>
-            </tr>`).join("")}
-          </tbody>
-        </table>
+        <table class="standings"><tbody>
+        ${table.map((t, i) => `
+          <tr class="srow pos-${i + 1}" data-team="${t.name}" data-player="${state.ownerOf[t.name] || ""}">
+            <td class="pos">${i + 1}</td>
+            <td class="teamcell"><span class="flag">${t.flag}</span><span class="team">${t.name}</span>${ownerChip(t.name)}</td>
+            <td class="num">${t.P}</td>
+            <td class="num">${(t.GF - t.GA) > 0 ? "+" : ""}${t.GF - t.GA}</td>
+            <td class="num pts">${t.Pts}</td>
+          </tr>`).join("")}
+        </tbody></table>
         ${fixtures.length ? `<div class="fixtures">${fixtures.map(fixtureRow).join("")}</div>` : ""}
       </div>`;
     }).join("")
@@ -319,26 +270,16 @@ function prettyStage(s) {
 
 function renderFixtures() {
   const el = document.getElementById("view-fixtures");
-  if (!state.matches.length) {
-    el.innerHTML = `<p class="empty">Fixtures will appear here once the schedule is published.</p>`;
-    return;
-  }
+  if (!state.matches.length) { el.innerHTML = `<p class="empty">Fixtures will appear here once the schedule is published.</p>`; return; }
   const sorted = [...state.matches].sort((a, b) => (a.utcDate || "").localeCompare(b.utcDate || ""));
   const days = new Map();
   for (const m of sorted) {
-    const key = m.utcDate
-      ? new Date(m.utcDate).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })
-      : "Date TBD";
+    const key = m.utcDate ? new Date(m.utcDate).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" }) : "Date TBD";
     (days.get(key) || days.set(key, []).get(key)).push(m);
   }
-  el.innerHTML = [...days].map(([day, ms]) => `
-    <div class="fx-day">
-      <h3 class="fx-date">${day}</h3>
-      <div class="nmx-list">${ms.map(matchCard).join("")}</div>
-    </div>`).join("");
+  el.innerHTML = [...days].map(([day, ms]) => `<div class="fx-day"><h3 class="fx-date">${day}</h3><div class="nmx-list">${ms.map(matchCard).join("")}</div></div>`).join("");
 }
 
-// "Shittest Team" — every team ranked by goals conceded (most first), with owner.
 function computeConceded() {
   const ga = {}, played = {};
   for (const teams of Object.values(state.groups)) for (const t of teams) { ga[t.name] = 0; played[t.name] = 0; }
@@ -356,63 +297,45 @@ function renderShittest() {
   const flagOf = {};
   for (const teams of Object.values(state.groups)) for (const t of teams) flagOf[t.name] = t.flag;
   const { ga, played } = computeConceded();
-
-  const rows = Object.keys(ga)
-    .map((name) => ({ name, ga: ga[name], played: played[name] }))
+  const rows = Object.keys(ga).map((name) => ({ name, ga: ga[name], played: played[name] }))
     .sort((x, y) => y.ga - x.ga || y.played - x.played || x.name.localeCompare(y.name));
-
   el.innerHTML = `
     <p class="shittest-note">Every team ranked by goals conceded — the leakiest defence sits top.</p>
-    <div class="table-scroll">
-      <table class="scorers">
-        <thead><tr><th class="pos">#</th><th>Team</th><th class="c">Conceded</th><th class="c">Pld</th><th>Owner</th></tr></thead>
-        <tbody>${
-          rows.map((r, i) => {
-            const owner = state.ownerOf[r.name];
-            return `
-            <tr class="scorer-row" data-team="${r.name}" data-player="${owner || ""}">
-              <td class="pos">${i + 1}</td>
-              <td class="ct"><span class="flag">${flagOf[r.name] || "🏳️"}</span><span class="ctn">${r.name}</span></td>
-              <td class="c g">${r.ga}</td>
-              <td class="c">${r.played}</td>
-              <td>${owner ? ownerChip(r.name) : '<span class="owner muted">—</span>'}</td>
-            </tr>`;
-          }).join("")
-        }</tbody>
-      </table>
-    </div>`;
+    <div class="table-scroll"><table class="scorers">
+      <thead><tr><th class="pos">#</th><th>Team</th><th class="c">Conceded</th><th class="c">Pld</th><th>Owner</th></tr></thead>
+      <tbody>${rows.map((r, i) => {
+        const owner = state.ownerOf[r.name];
+        return `<tr class="scorer-row" data-team="${r.name}" data-player="${owner || ""}">
+          <td class="pos">${i + 1}</td>
+          <td class="ct"><span class="flag">${flagOf[r.name] || "🏳️"}</span><span class="ctn">${r.name}</span></td>
+          <td class="c g">${r.ga}</td><td class="c">${r.played}</td>
+          <td>${owner ? ownerChip(r.name) : '<span class="owner muted">—</span>'}</td>
+        </tr>`;
+      }).join("")}</tbody>
+    </table></div>`;
 }
 
 function renderKnockout() {
   const el = document.getElementById("view-knockout");
   const ko = state.matches.filter((m) => !isGroupStage(m));
-  if (!ko.length) {
-    el.innerHTML = `<p class="empty">The knockout stage hasn't started yet. Fixtures appear here once the groups are decided.</p>`;
-    return;
-  }
+  if (!ko.length) { el.innerHTML = `<p class="empty">The knockout stage hasn't started yet.</p>`; return; }
   const byStage = {};
   for (const m of ko) (byStage[m.stage] ||= []).push(m);
   const stages = Object.keys(byStage).sort((a, b) => {
     const ia = STAGE_ORDER.indexOf(a), ib = STAGE_ORDER.indexOf(b);
     return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
   });
-  el.innerHTML = `<div class="bracket">${
-    stages.map((s) => `
-      <div class="stage">
-        <h2>${prettyStage(s)}</h2>
-        <div class="stage-matches">${
-          byStage[s].sort((a, b) => (a.utcDate || "").localeCompare(b.utcDate || "")).map(fixtureRow).join("")
-        }</div>
-      </div>`).join("")
-  }</div>`;
+  el.innerHTML = `<div class="bracket">${stages.map((s) => `
+    <div class="stage"><h2>${prettyStage(s)}</h2>
+    <div class="stage-matches">${byStage[s].sort((a, b) => (a.utcDate || "").localeCompare(b.utcDate || "")).map(fixtureRow).join("")}</div>
+    </div>`).join("")}</div>`;
 }
 
-// Implied win probability per team from outright odds (1/odds, normalised).
 function computeWinProb() {
   const raw = {}; let total = 0;
   for (const [t, o] of Object.entries(state.odds)) {
     if (t.startsWith("_") || !(o > 0)) continue;
-    const r = resolveRoster(t); // map feed/odds names (USA, Czechia, …) to roster names
+    const r = resolveRoster(t);
     if (!r) continue;
     raw[r.name] = 1 / o; total += raw[r.name];
   }
@@ -425,16 +348,11 @@ function renderPlayers(standings) {
   const el = document.getElementById("view-players");
   const alive = aliveSet(standings);
   const players = Object.keys(state.assignments).filter((k) => !k.startsWith("_"));
-
-  // points / goals per team from the group tables
   const teamStat = {};
   for (const arr of Object.values(standings)) for (const t of arr) teamStat[t.name] = t;
   const groupOf = {}, flagOf = {};
   for (const [g, teams] of Object.entries(state.groups)) for (const t of teams) { groupOf[t.name] = g; flagOf[t.name] = t.flag; }
-
-  // pooled win % per player (same system as the old Odds tab)
   const { prob, hasOdds } = computeWinProb();
-
   const rows = players.map((p) => {
     const teams = state.assignments[p];
     const pts = teams.reduce((s, t) => s + (teamStat[t]?.Pts || 0), 0);
@@ -443,81 +361,53 @@ function renderPlayers(standings) {
     const aliveCount = teams.filter((t) => alive.has(t)).length;
     const win = teams.reduce((s, t) => s + (prob[t] || 0), 0);
     return { p, teams, pts, gf, ga, aliveCount, win };
-  }).sort((x, y) => hasOdds
-    ? (y.win - x.win) || (y.pts - x.pts)
-    : (y.pts - x.pts) || (y.gf - y.ga) - (x.gf - x.ga) || (y.aliveCount - x.aliveCount));
-
+  }).sort((x, y) => hasOdds ? (y.win - x.win) || (y.pts - x.pts) : (y.pts - x.pts) || (y.gf - y.ga) - (x.gf - x.ga) || (y.aliveCount - x.aliveCount));
   const maxWin = Math.max(...rows.map((r) => r.win), 0.0001);
-
-  el.innerHTML = `<div class="grid players">${
-    rows.map((r, i) => {
-      const c = state.colorOf[r.p];
-      const sub = hasOdds
-        ? `<b>${(r.win * 100).toFixed(1)}%</b> to win · ${r.pts} pts · ${r.aliveCount}/4 alive`
-        : `${r.pts} pts · ${r.aliveCount}/4 alive`;
-      return `
-      <div class="card" data-player="${r.p}">
-        <div class="card-head" style="border-left:4px solid ${c}">
-          <h2><span class="rank">${i + 1}</span> ${r.p}</h2>
-          <span class="sub">${sub}</span>
-        </div>
-        ${hasOdds ? `<div class="obar pcard-bar"><span style="width:${(r.win / maxWin * 100).toFixed(1)}%;background:${c}"></span></div>` : ""}
-        <div class="player-teams">${
-          r.teams.map((name) => {
-            const out = !alive.has(name);
-            const tw = hasOdds ? `<span class="twin">${((prob[name] || 0) * 100).toFixed(1)}%</span>` : "";
-            return `
-            <div class="row ${out ? "out" : ""}" data-team="${name}" data-player="${r.p}">
-              <span class="flag">${flagOf[name] || "🏳️"}</span>
-              <span class="team">${name}</span>
-              <span class="grp">${groupOf[name] || "?"}</span>
-              ${tw}
-              <span class="tpts">${teamStat[name]?.Pts ?? 0}p</span>
-            </div>`;
-          }).join("")
-        }</div>
-      </div>`;
-    }).join("")
-  }</div>`;
+  el.innerHTML = `<div class="grid players">${rows.map((r, i) => {
+    const c = state.colorOf[r.p];
+    const sub = hasOdds ? `<b>${(r.win * 100).toFixed(1)}%</b> to win · ${r.pts} pts · ${r.aliveCount}/1 alive` : `${r.pts} pts · ${r.aliveCount}/1 alive`;
+    return `<div class="card" data-player="${r.p}">
+      <div class="card-head" style="border-left:4px solid ${c}">
+        <h2><span class="rank">${i + 1}</span> ${r.p}</h2><span class="sub">${sub}</span>
+      </div>
+      ${hasOdds ? `<div class="obar pcard-bar"><span style="width:${(r.win / maxWin * 100).toFixed(1)}%;background:${c}"></span></div>` : ""}
+      <div class="player-teams">${r.teams.map((name) => {
+        const out = !alive.has(name);
+        const tw = hasOdds ? `<span class="twin">${((prob[name] || 0) * 100).toFixed(1)}%</span>` : "";
+        return `<div class="row ${out ? "out" : ""}" data-team="${name}" data-player="${r.p}">
+          <span class="flag">${flagOf[name] || "🏳️"}</span><span class="team">${name}</span>
+          <span class="grp">${groupOf[name] || "?"}</span>${tw}<span class="tpts">${teamStat[name]?.Pts ?? 0}p</span>
+        </div>`;
+      }).join("")}</div>
+    </div>`;
+  }).join("")}</div>`;
 }
 
-// Tournament top scorers: player, the country they play for, goals, and team owner.
 function renderScorers() {
   const el = document.getElementById("view-scorers");
   const list = state.scorers || [];
-  if (!list.length) {
-    el.innerHTML = `<p class="empty">Top scorers will appear here once goals start going in.</p>`;
-    return;
-  }
-  el.innerHTML = `
-    <div class="table-scroll">
-      <table class="scorers">
-        <thead><tr><th class="pos">#</th><th>Player</th><th>Country</th><th class="c">Goals</th><th>Owner</th></tr></thead>
-        <tbody>${
-          list.map((s, i) => {
-            const r = resolveRoster(s.team);
-            const country = r ? r.name : (s.team || "—");
-            const flag = r ? r.flag : "🏳️";
-            const owner = r ? state.ownerOf[r.name] : null;
-            return `
-            <tr class="scorer-row" data-team="${country}" data-player="${owner || ""}">
-              <td class="pos">${i + 1}</td>
-              <td class="pl">${s.player}</td>
-              <td class="ct"><span class="flag">${flag}</span><span class="ctn">${country}</span></td>
-              <td class="c g">${s.goals}</td>
-              <td>${owner ? ownerChip(r.name) : '<span class="owner muted">—</span>'}</td>
-            </tr>`;
-          }).join("")
-        }</tbody>
-      </table>
-    </div>`;
+  if (!list.length) { el.innerHTML = `<p class="empty">Top scorers will appear here once goals start going in.</p>`; return; }
+  el.innerHTML = `<div class="table-scroll"><table class="scorers">
+    <thead><tr><th class="pos">#</th><th>Player</th><th>Country</th><th class="c">Goals</th><th>Owner</th></tr></thead>
+    <tbody>${list.map((s, i) => {
+      const r = resolveRoster(s.team);
+      const country = r ? r.name : (s.team || "—");
+      const flag = r ? r.flag : "🏳️";
+      const owner = r ? state.ownerOf[r.name] : null;
+      return `<tr class="scorer-row" data-team="${country}" data-player="${owner || ""}">
+        <td class="pos">${i + 1}</td><td class="pl">${s.player}</td>
+        <td class="ct"><span class="flag">${flag}</span><span class="ctn">${country}</span></td>
+        <td class="c g">${s.goals}</td>
+        <td>${owner ? ownerChip(r.name) : '<span class="owner muted">—</span>'}</td>
+      </tr>`;
+    }).join("")}</tbody>
+  </table></div>`;
 }
 
+// Legend hidden — players list removed from main view
 function renderLegend(players) {
-  document.getElementById("legend").innerHTML = players.map((p) => {
-    const c = state.colorOf[p];
-    return `<button class="chip" data-player="${p}"><span class="dot" style="background:${c}"></span>${p}</button>`;
-  }).join("");
+  const el = document.getElementById("legend");
+  if (el) el.innerHTML = "";
 }
 
 function renderStatus() {
@@ -526,59 +416,43 @@ function renderStatus() {
   if (!played) {
     el.textContent = "No results yet — group standings will fill in as matches are played.";
   } else {
-    el.textContent = state.updated
-      ? `Scores last updated ${new Date(state.updated).toLocaleString()}.`
-      : "Showing latest committed results.";
+    el.textContent = state.updated ? `Scores last updated ${new Date(state.updated).toLocaleString()}.` : "Showing latest committed results.";
   }
 }
 
-// ---- Interaction --------------------------------------------------------
 function applyHighlight() {
   const player = state.activePlayer;
-
   document.querySelectorAll(".legend .chip").forEach((chip) => {
     chip.classList.toggle("is-dim", !!player && chip.dataset.player !== player);
     chip.classList.toggle("is-on", !!player && chip.dataset.player === player);
   });
-
-  // A row matches if the active player owns either of its teams.
-  const rowMatches = (el) =>
-    !player ||
-    el.dataset.player === player ||
-    (el.dataset.team2 && state.ownerOf[el.dataset.team2] === player);
-
+  const rowMatches = (el) => !player || el.dataset.player === player || (el.dataset.team2 && state.ownerOf[el.dataset.team2] === player);
   document.querySelectorAll(".srow, .row, .fixture, .scorer-row, .nmx").forEach((el) => {
     el.classList.toggle("is-dim", !rowMatches(el));
   });
-
-  // Fixture cards: hide the ones that aren't the selected player's.
   document.querySelectorAll("#view-fixtures .nmx").forEach((c) => {
     c.classList.toggle("is-hidden", !!player && c.classList.contains("is-dim"));
   });
-
-  // When a player is selected, hide whole cards/groups/days/stages with nothing of theirs.
   document.querySelectorAll("#view-groups .card, #view-knockout .stage, #view-players .card").forEach((c) => {
     if (!player) { c.classList.remove("is-hidden"); return; }
     const rows = c.querySelectorAll(".srow, .row, .fixture");
     const anyShown = [...rows].some((r) => !r.classList.contains("is-dim"));
     c.classList.toggle("is-hidden", rows.length > 0 && !anyShown);
   });
-  // Fixture day groups: hide a day if none of its cards are the player's.
   document.querySelectorAll("#view-fixtures .fx-day").forEach((c) => {
     if (!player) { c.classList.remove("is-hidden"); return; }
     const cards = c.querySelectorAll(".nmx");
     const anyShown = [...cards].some((x) => !x.classList.contains("is-dim"));
     c.classList.toggle("is-hidden", cards.length > 0 && !anyShown);
   });
-
-  // Active-filter banner with a one-tap clear.
   const note = document.getElementById("filter-note");
   if (note) {
-    note.innerHTML = player
-      ? `Showing <b>${player}</b>'s teams <button class="filter-clear" type="button">clear ✕</button>`
-      : "";
+    note.innerHTML = player ? `Showing <b>${player}</b>'s teams <button class="filter-clear" type="button">clear ✕</button>` : "";
   }
 }
+
+const ALL_VIEWS = ["groups", "knockout", "fixtures", "scorers", "players", "shittest", "owngoal", "redcard", "conceded", "yellowcard"];
+const SIDEBET_VIEWS = ["owngoal", "redcard", "conceded", "yellowcard"];
 
 function wireEvents() {
   document.querySelectorAll(".tab").forEach((tab) => {
@@ -586,8 +460,13 @@ function wireEvents() {
       document.querySelectorAll(".tab").forEach((t) => t.classList.remove("is-active"));
       tab.classList.add("is-active");
       const view = tab.dataset.view;
-      for (const v of ["groups", "knockout", "fixtures", "scorers", "players", "shittest"]) {
-        document.getElementById(`view-${v}`).hidden = v !== view;
+      for (const v of ALL_VIEWS) {
+        const el = document.getElementById(`view-${v}`);
+        if (el) el.hidden = v !== view;
+      }
+      // If it's a side bet tab, render it
+      if (SIDEBET_VIEWS.includes(view)) {
+        renderSideBet(view, document.getElementById(`view-${view}`));
       }
     });
   });
@@ -607,7 +486,6 @@ function wireEvents() {
   });
 }
 
-// Re-render everything that depends on live data (called on load and each poll).
 function renderAll() {
   const standings = computeStandings();
   renderFixtures();
@@ -617,10 +495,9 @@ function renderAll() {
   renderScorers();
   renderShittest();
   renderStatus();
-  applyHighlight(); // re-apply the active player filter after the DOM is rebuilt
+  applyHighlight();
 }
 
-// Overlay ESPN live scores/status onto state.matches (matched by team pair).
 function mergeEspnScores(events) {
   const idx = new Map();
   for (const m of state.matches) {
@@ -631,7 +508,7 @@ function mergeEspnScores(events) {
   for (const e of events) {
     const c = e.competitions?.[0];
     const st = e.status?.type?.state;
-    if (!c || st === "pre") continue; // not started → nothing to overlay
+    if (!c || st === "pre") continue;
     const eh = c.competitors?.find((x) => x.homeAway === "home");
     const ea = c.competitors?.find((x) => x.homeAway === "away");
     const rh = resolveRoster(eh?.team?.displayName || eh?.team?.name);
@@ -649,7 +526,6 @@ function mergeEspnScores(events) {
     if (st === "post") {
       m.winner = m.homeScore > m.awayScore ? "HOME_TEAM" : (m.awayScore > m.homeScore ? "AWAY_TEAM" : "DRAW");
     }
-    // Goalscorers + minute, tagged to the home/away side of our match.
     const mHome = resolveRoster(m.home)?.name;
     const teamNameById = {};
     for (const x of c.competitors) teamNameById[x.team?.id] = resolveRoster(x.team?.displayName || x.team?.name)?.name;
@@ -671,11 +547,9 @@ async function fetchLiveScores() {
     if (!res.ok) return;
     const data = await res.json();
     if (mergeEspnScores(data.events || [])) state.updated = new Date().toISOString();
-  } catch { /* keep last good data if ESPN is unreachable */ }
+  } catch {}
 }
 
-// Poll on an interval so an open page updates live during games: re-read the
-// committed schedule/scorers, then overlay live ESPN scores on top.
 async function refreshLiveData() {
   try {
     const [matchData, scorerData] = await Promise.all([
@@ -686,7 +560,102 @@ async function refreshLiveData() {
     if (scorerData) state.scorers = scorerData.scorers || [];
     await fetchLiveScores();
     renderAll();
-  } catch { /* keep showing the last good data */ }
+  } catch {}
+}
+
+// Side bet rendering (inline so it has access to state)
+async function renderSideBet(view, el) {
+  if (!el) return;
+  el.innerHTML = '<p class="status">Loading…</p>';
+  let data;
+  try {
+    const res = await fetch('data/sidebets.json?_=' + Date.now());
+    data = await res.json();
+  } catch (e) {
+    el.innerHTML = '<p class="status">Could not load side bet data.</p>';
+    return;
+  }
+  switch (view) {
+    case 'owngoal':    renderOwnGoal(el, data.ownGoals); break;
+    case 'redcard':    renderRedCard(el, data.redCards); break;
+    case 'conceded':   renderMostConceded(el, data.mostConceded); break;
+    case 'yellowcard': renderYellowCard(el, data.yellowCards); break;
+  }
+}
+
+function sbCard(icon, title, body) {
+  return `<div class="sidebet-card"><div class="sidebet-header">${icon} <span>${title}</span></div><div class="sidebet-body">${body}</div></div>`;
+}
+function sbNoData(label) {
+  return `<p class="sidebet-pending">⏳ No ${label} recorded yet — check back soon!</p>`;
+}
+function sbRow(label, value) {
+  return `<div class="sidebet-row"><span class="sidebet-label">${label}</span><span class="sidebet-value">${value}</span></div>`;
+}
+
+function renderOwnGoal(el, goals) {
+  const valid = (goals || []).filter(g => g.minute !== null);
+  if (!valid.length) { el.innerHTML = sbCard('⚽', 'Fastest Own Goal', sbNoData('own goals')); return; }
+  valid.sort((a, b) => a.minute - b.minute);
+  const f = valid[0];
+  let html = `<p class="sidebet-intro">Fastest own goal of the tournament wins!</p><h3 class="sidebet-current-title">⚡ Current Fastest</h3>`;
+  html += sbCard('⚽', `${f.player} (${f.team})`, sbRow('Minute', f.minute + "'") + sbRow('Match', f.match) + sbRow('Date', f.date));
+  if (valid.length > 1) {
+    html += '<h3 class="sidebet-list-title">All Own Goals</h3><div class="sidebet-list">';
+    valid.forEach((g, i) => { html += `<div class="sidebet-list-item">#${i+1} — ${g.minute}' · <strong>${g.player}</strong> (${g.team}) · ${g.match}</div>`; });
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function renderRedCard(el, cards) {
+  const valid = (cards || []).filter(c => c.minute !== null);
+  if (!valid.length) { el.innerHTML = sbCard('🟥', 'Fastest Red Card', sbNoData('red cards')); return; }
+  valid.sort((a, b) => a.minute - b.minute);
+  const f = valid[0];
+  let html = `<p class="sidebet-intro">Earliest red card of the tournament wins!</p><h3 class="sidebet-current-title">⚡ Current Fastest</h3>`;
+  html += sbCard('🟥', `${f.player} (${f.team})`, sbRow('Minute', f.minute + "'") + sbRow('Match', f.match) + sbRow('Date', f.date));
+  if (valid.length > 1) {
+    html += '<h3 class="sidebet-list-title">All Red Cards</h3><div class="sidebet-list">';
+    valid.forEach((c, i) => { html += `<div class="sidebet-list-item">#${i+1} — ${c.minute}' · <strong>${c.player}</strong> (${c.team}) · ${c.match}</div>`; });
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function renderMostConceded(el, matches) {
+  const valid = (matches || []).filter(m => m.goals !== null);
+  if (!valid.length) { el.innerHTML = sbCard('😬', 'Most Goals Conceded', sbNoData('high-conceding matches')); return; }
+  valid.sort((a, b) => b.goals - a.goals);
+  const w = valid[0];
+  let html = `<p class="sidebet-intro">Which team concedes the most in a single match?</p><h3 class="sidebet-current-title">😬 Current Record</h3>`;
+  html += sbCard('🥅', w.team, sbRow('Goals conceded', w.goals) + sbRow('Match', w.match) + sbRow('Date', w.date));
+  if (valid.length > 1) {
+    html += '<h3 class="sidebet-list-title">Leaderboard</h3><div class="sidebet-list">';
+    valid.forEach((m, i) => { html += `<div class="sidebet-list-item">#${i+1} — <strong>${m.goals} conceded</strong> · ${m.team} · ${m.match}</div>`; });
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+function renderYellowCard(el, data) {
+  const current = (data && data.current) || 0;
+  const target = (data && data.target) || 100;
+  const pct = Math.min(100, Math.round((current / target) * 100));
+  const done = current >= target;
+  let html = `
+    <p class="sidebet-intro">Who gets booked for the tournament's 100th yellow card?</p>
+    <div class="sidebet-progress-wrap">
+      <div class="sidebet-progress-bar"><div class="sidebet-progress-fill ${done ? 'done' : ''}" style="width:${pct}%"></div></div>
+      <div class="sidebet-progress-label">${current} / ${target} yellow cards</div>
+    </div>`;
+  if (done && data.leader) {
+    html += `<p class="sidebet-winner">🎉 The 100th yellow card has been shown!</p>`;
+    html += sbCard('🟨', `${data.leader} (${data.leaderTeam})`, sbRow('Match', data.leaderMatch || '—'));
+  } else {
+    html += `<p class="sidebet-intro">We're ${target - current} away — who will it be?</p>`;
+  }
+  el.innerHTML = html;
 }
 
 async function init() {
@@ -706,13 +675,10 @@ async function init() {
     state.odds = oddsData || {};
     state.scorers = scorerData.scorers || [];
     state.facts = factData || {};
-
     const players = buildIndexes();
     renderLegend(players);
     wireEvents();
     renderAll();
-
-    // Pull live ESPN scores immediately, then auto-refresh every 30s.
     fetchLiveScores().then(renderAll);
     setInterval(() => { if (!document.hidden) refreshLiveData(); }, 30000);
     document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshLiveData(); });
