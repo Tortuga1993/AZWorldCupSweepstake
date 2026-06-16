@@ -1,0 +1,119 @@
+name: Update Side Bets
+
+on:
+  schedule:
+    - cron: '*/30 8-23 * * *'
+  workflow_dispatch:
+
+jobs:
+  update-sidebets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Fetch and process side bet data
+        env:
+          HIGHLIGHTLY_KEY: ${{ secrets.HIGHLIGHTLY_KEY }}
+        run: |
+          node - <<'EOF'
+          const https = require('https');
+          const fs = require('fs');
+          const API_KEY = process.env.HIGHLIGHTLY_KEY;
+          const BASE = 'football.highlightly.net';
+          const LEAGUE_ID = 1635;
+
+          function get(path) {
+            return new Promise((resolve, reject) => {
+              const options = { hostname: BASE, path, method: 'GET', headers: { 'x-api-key': API_KEY, 'Content-Type': 'application/json' } };
+              https.get(options, res => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => { try { resolve(JSON.parse(data)); } catch(e) { reject(e); } });
+              }).on('error', reject);
+            });
+          }
+
+          async function main() {
+            let existing = { ownGoals: [], redCards: [], mostConceded: [], yellowCards: { target: 100, current: 0, leader: null, leaderTeam: null, leaderMatch: null } };
+            try { existing = JSON.parse(fs.readFileSync('data/sidebets.json', 'utf8')); } catch(e) {}
+
+            const today = new Date().toISOString().split('T')[0];
+            const matchesRes = await get(`/matches?leagueId=${LEAGUE_ID}&date=${today}`);
+            const matches = matchesRes?.data || matchesRes?.matches || [];
+
+            let allOwnGoals = [];
+            let allRedCards = [];
+            let mostConceded = [];
+            let totalYellows = existing.yellowCards?.current || 0;
+            let lastYellowPlayer = existing.yellowCards?.leader || null;
+            let lastYellowTeam = existing.yellowCards?.leaderTeam || null;
+            let lastYellowMatch = existing.yellowCards?.leaderMatch || null;
+
+            for (const match of matches) {
+              if (!match.id) continue;
+              if (match.status !== 'finished' && match.statusCode !== 'FT') continue;
+              let detail;
+              try { const r = await get(`/matches/${match.id}`); detail = r?.data || r; } catch(e) { continue; }
+
+              const events = detail?.events || detail?.incidents || [];
+              const homeTeam = detail?.homeTeam?.name || match.homeTeam?.name || '';
+              const awayTeam = detail?.awayTeam?.name || match.awayTeam?.name || '';
+              const matchLabel = `${homeTeam} vs ${awayTeam}`;
+              const matchDate = match.date || today;
+              let homeConceded = 0, awayConceded = 0;
+
+              for (const ev of events) {
+                const type = (ev.type || ev.incidentType || '').toLowerCase();
+                const det = (ev.detail || ev.incidentClass || '').toLowerCase();
+                const minute = ev.time || ev.minute || ev.incidentTime || null;
+                const player = ev.player?.name || ev.playerName || ev.player || null;
+                const team = ev.team?.name || ev.teamName || ev.team || null;
+
+                if (det.includes('own') || type === 'own-goal') {
+                  allOwnGoals.push({ minute, player, team, match: matchLabel, date: matchDate });
+                }
+                if (type === 'card' && det.includes('red') && !det.includes('yellow')) {
+                  allRedCards.push({ minute, player, team, match: matchLabel, date: matchDate });
+                }
+                if (type === 'card' && det.includes('yellow') && !det.includes('red')) {
+                  totalYellows++;
+                  lastYellowPlayer = player;
+                  lastYellowTeam = team;
+                  lastYellowMatch = matchLabel;
+                }
+                if (type === 'goal') {
+                  if (det.includes('own')) { if (team === homeTeam) homeConceded++; else awayConceded++; }
+                  else { if (team === homeTeam) awayConceded++; else homeConceded++; }
+                }
+              }
+              if (homeConceded > 0) mostConceded.push({ goals: homeConceded, team: homeTeam, match: matchLabel, date: matchDate });
+              if (awayConceded > 0) mostConceded.push({ goals: awayConceded, team: awayTeam, match: matchLabel, date: matchDate });
+            }
+
+            allOwnGoals.sort((a,b) => (a.minute||999)-(b.minute||999));
+            allRedCards.sort((a,b) => (a.minute||999)-(b.minute||999));
+            mostConceded.sort((a,b) => b.goals-a.goals);
+
+            const sidebets = {
+              lastUpdated: new Date().toISOString(),
+              ownGoals: allOwnGoals.length ? allOwnGoals : existing.ownGoals,
+              redCards: allRedCards.length ? allRedCards : existing.redCards,
+              mostConceded: mostConceded.length ? mostConceded.slice(0,10) : existing.mostConceded,
+              yellowCards: { target: 100, current: totalYellows, leader: totalYellows >= 100 ? lastYellowPlayer : existing.yellowCards?.leader, leaderTeam: totalYellows >= 100 ? lastYellowTeam : existing.yellowCards?.leaderTeam, leaderMatch: totalYellows >= 100 ? lastYellowMatch : existing.yellowCards?.leaderMatch }
+            };
+
+            fs.writeFileSync('data/sidebets.json', JSON.stringify(sidebets, null, 2));
+            console.log(`✅ Done: ${allOwnGoals.length} own goals, ${allRedCards.length} red cards, ${totalYellows} yellows`);
+          }
+
+          main().catch(e => { console.error(e); process.exit(1); });
+          EOF
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/sidebets.json
+          git diff --staged --quiet || git commit -m "chore: auto-update side bets [skip ci]"
+          git push
