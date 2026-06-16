@@ -20,69 +20,79 @@ function get(path) {
   });
 }
 
+function getDates() {
+  const dates = [];
+  const start = new Date('2026-06-12');
+  const today = new Date();
+  for (let d = new Date(start); d <= today; d.setDate(d.getDate() + 1)) {
+    dates.push(d.toISOString().split('T')[0]);
+  }
+  return dates;
+}
+
 async function main() {
   let existing = { ownGoals: [], redCards: [], mostConceded: [], yellowCards: { target: 100, current: 0, leader: null, leaderTeam: null, leaderMatch: null } };
   try { existing = JSON.parse(fs.readFileSync('data/sidebets.json', 'utf8')); } catch(e) {}
 
-  const today = new Date().toISOString().split('T')[0];
-  const matchesRes = await get(`/matches?leagueId=${LEAGUE_ID}&date=${today}`);
-  const matches = (matchesRes?.data || []).filter(m =>
-    ['Finished','Finished after extra time','Finished after penalties'].includes(m.state?.description)
-  );
+  const allOwnGoals = [];
+  const allRedCards = [];
+  const allConceded = [];
+  let totalYellows = 0;
+  let lastYellowPlayer = null;
+  let lastYellowTeam = null;
+  let lastYellowMatch = null;
 
-  let allOwnGoals = [...(existing.ownGoals || [])];
-  let allRedCards = [...(existing.redCards || [])];
-  let allConceded = [...(existing.mostConceded || [])];
-  let totalYellows = existing.yellowCards?.current || 0;
-  let lastYellowPlayer = existing.yellowCards?.leader || null;
-  let lastYellowTeam = existing.yellowCards?.leaderTeam || null;
-  let lastYellowMatch = existing.yellowCards?.leaderMatch || null;
+  const dates = getDates();
+  console.log(`Fetching ${dates.length} days of matches...`);
 
-  for (const match of matches) {
-    if (!match.id) continue;
-    let detail;
-    try { const r = await get(`/matches/${match.id}`); detail = Array.isArray(r) ? r[0] : r; } catch(e) { continue; }
+  for (const date of dates) {
+    let matchesRes;
+    try { matchesRes = await get(`/matches?leagueId=${LEAGUE_ID}&date=${date}`); } catch(e) { continue; }
+    const matches = (matchesRes?.data || []).filter(m =>
+      ['Finished','Finished after extra time','Finished after penalties'].includes(m.state?.description)
+    );
 
-    const events = detail?.events || [];
-    const homeTeam = detail?.homeTeam?.name || '';
-    const awayTeam = detail?.awayTeam?.name || '';
-    const matchLabel = `${homeTeam} vs ${awayTeam}`;
-    const matchKey = matchLabel + today;
-    const alreadyDone = allOwnGoals.some(g => (g.match + g.date) === matchKey);
+    for (const match of matches) {
+      if (!match.id) continue;
+      let detail;
+      try { const r = await get(`/matches/${match.id}`); detail = Array.isArray(r) ? r[0] : r; } catch(e) { continue; }
 
-    let homeConceded = 0, awayConceded = 0;
+      const events = detail?.events || [];
+      const homeTeam = detail?.homeTeam?.name || '';
+      const awayTeam = detail?.awayTeam?.name || '';
+      const matchLabel = `${homeTeam} vs ${awayTeam}`;
+      let homeConceded = 0, awayConceded = 0;
 
-    for (const ev of events) {
-      const type = ev.type || '';
-      const minute = ev.time ? parseInt(ev.time) : null;
-      const player = ev.player || null;
-      const team = ev.team?.name || null;
+      for (const ev of events) {
+        const type = ev.type || '';
+        const minute = ev.time ? parseInt(ev.time) : null;
+        const player = ev.player || null;
+        const team = ev.team?.name || null;
 
-      if (type === 'Own Goal' && !alreadyDone) {
-        allOwnGoals.push({ minute, player, team, match: matchLabel, date: today });
+        if (type === 'Own Goal') {
+          allOwnGoals.push({ minute, player, team, match: matchLabel, date });
+        }
+        if (type === 'Red Card') {
+          allRedCards.push({ minute, player, team, match: matchLabel, date });
+        }
+        if (type === 'Yellow Card') {
+          totalYellows++;
+          lastYellowPlayer = player;
+          lastYellowTeam = team;
+          lastYellowMatch = matchLabel;
+        }
+        if (type === 'Goal' || type === 'Penalty') {
+          if (team === homeTeam) awayConceded++;
+          else homeConceded++;
+        }
+        if (type === 'Own Goal') {
+          if (team === homeTeam) homeConceded++;
+          else awayConceded++;
+        }
       }
-      if (type === 'Red Card' && !alreadyDone) {
-        allRedCards.push({ minute, player, team, match: matchLabel, date: today });
-      }
-      if (type === 'Yellow Card') {
-        totalYellows++;
-        lastYellowPlayer = player;
-        lastYellowTeam = team;
-        lastYellowMatch = matchLabel;
-      }
-      if (type === 'Goal' || type === 'Penalty') {
-        if (team === homeTeam) awayConceded++;
-        else homeConceded++;
-      }
-      if (type === 'Own Goal') {
-        if (team === homeTeam) homeConceded++;
-        else awayConceded++;
-      }
-    }
 
-    if (!alreadyDone) {
-      if (homeConceded > 0) allConceded.push({ goals: homeConceded, team: homeTeam, match: matchLabel, date: today });
-      if (awayConceded > 0) allConceded.push({ goals: awayConceded, team: awayTeam, match: matchLabel, date: today });
+      if (homeConceded > 0) allConceded.push({ goals: homeConceded, team: homeTeam, match: matchLabel, date });
+      if (awayConceded > 0) allConceded.push({ goals: awayConceded, team: awayTeam, match: matchLabel, date });
     }
   }
 
@@ -98,14 +108,14 @@ async function main() {
     yellowCards: {
       target: 100,
       current: totalYellows,
-      leader: totalYellows >= 100 ? lastYellowPlayer : existing.yellowCards?.leader,
-      leaderTeam: totalYellows >= 100 ? lastYellowTeam : existing.yellowCards?.leaderTeam,
-      leaderMatch: totalYellows >= 100 ? lastYellowMatch : existing.yellowCards?.leaderMatch
+      leader: totalYellows >= 100 ? lastYellowPlayer : null,
+      leaderTeam: totalYellows >= 100 ? lastYellowTeam : null,
+      leaderMatch: totalYellows >= 100 ? lastYellowMatch : null
     }
   };
 
   fs.writeFileSync('data/sidebets.json', JSON.stringify(sidebets, null, 2));
-  console.log(`Done: ${allOwnGoals.length} own goals, ${allRedCards.length} red cards, ${totalYellows} yellows`);
+  console.log(`Done: ${allOwnGoals.length} own goals, ${allRedCards.length} red cards, ${totalYellows} yellows, ${allConceded.length} conceded records`);
 }
 
 main().catch(e => { console.error(e); process.exit(1); });
