@@ -74,6 +74,7 @@ async function main() {
 
       for (const ev of events) {
         const type = ev.type || '';
+        console.log(`Event type: "${type}"`);
         const minute = ev.time ? parseInt(ev.time) : null;
         const player = ev.player || null;
         const team = ev.team?.name || null;
