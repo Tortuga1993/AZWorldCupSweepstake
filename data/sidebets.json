@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-16T20:00:00.029Z",
+  "lastUpdated": "2026-06-17T12:32:06.847Z",
   "ownGoals": [
     {
       "minute": 7,
@@ -14,6 +14,20 @@
       "team": "Belgium",
       "match": "Belgium vs Egypt",
       "date": "2026-06-15"
+    },
+    {
+      "minute": 76,
+      "player": "Y. Al Arab",
+      "team": "Austria",
+      "match": "Austria vs Jordan",
+      "date": "2026-06-17"
+    },
+    {
+      "minute": 90,
+      "player": "A. Hussein",
+      "team": "Norway",
+      "match": "Iraq vs Norway",
+      "date": "2026-06-16"
     }
   ],
   "redCards": [],
@@ -35,6 +49,24 @@
       "team": "Paraguay",
       "match": "USA vs Paraguay",
       "date": "2026-06-13"
+    },
+    {
+      "goals": 3,
+      "team": "Iraq",
+      "match": "Iraq vs Norway",
+      "date": "2026-06-16"
+    },
+    {
+      "goals": 3,
+      "team": "Senegal",
+      "match": "France vs Senegal",
+      "date": "2026-06-16"
+    },
+    {
+      "goals": 3,
+      "team": "Algeria",
+      "match": "Argentina vs Algeria",
+      "date": "2026-06-17"
     },
     {
       "goals": 2,
@@ -59,29 +91,11 @@
       "team": "Japan",
       "match": "Netherlands vs Japan",
       "date": "2026-06-14"
-    },
-    {
-      "goals": 2,
-      "team": "Turkey",
-      "match": "Australia vs Turkey",
-      "date": "2026-06-14"
-    },
-    {
-      "goals": 2,
-      "team": "Belgium",
-      "match": "Belgium vs Egypt",
-      "date": "2026-06-15"
-    },
-    {
-      "goals": 2,
-      "team": "Iran",
-      "match": "Iran vs New Zealand",
-      "date": "2026-06-16"
     }
   ],
   "yellowCards": {
     "target": 100,
-    "current": 38,
+    "current": 40,
     "leader": null,
     "leaderTeam": null,
     "leaderMatch": null
