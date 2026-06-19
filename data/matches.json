@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-19T11:56:17.227Z",
+  "updated": "2026-06-19T22:13:00.380Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -400,13 +400,13 @@
       "stage": "GROUP_STAGE",
       "group": "D",
       "utcDate": "2026-06-19T19:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 2,
       "home": "United States",
       "away": "Australia",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 2,
+      "awayScore": 0,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
@@ -414,13 +414,13 @@
       "stage": "GROUP_STAGE",
       "group": "C",
       "utcDate": "2026-06-19T22:00:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": 2,
       "home": "Scotland",
       "away": "Morocco",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 0,
+      "awayScore": 1,
+      "winner": "AWAY_TEAM",
       "odds": null
     },
     {
