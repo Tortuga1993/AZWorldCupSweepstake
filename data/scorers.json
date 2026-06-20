@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-20T10:12:43.108Z",
+  "updated": "2026-06-20T20:51:49.718Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
@@ -88,6 +88,18 @@
       "assists": null
     },
     {
+      "player": "Brian Brobbey",
+      "team": "Netherlands",
+      "goals": 2,
+      "assists": null
+    },
+    {
+      "player": "Cody Gakpo",
+      "team": "Netherlands",
+      "goals": 2,
+      "assists": 2
+    },
+    {
       "player": "Julián Quiñones",
       "team": "Mexico",
       "goals": 1,
@@ -167,18 +179,6 @@
     },
     {
       "player": "Felix Kalu Nmecha",
-      "team": "Germany",
-      "goals": 1,
-      "assists": null
-    },
-    {
-      "player": "Livano Comenencia",
-      "team": "Curaçao",
-      "goals": 1,
-      "assists": null
-    },
-    {
-      "player": "Nico Schlotterbeck",
       "team": "Germany",
       "goals": 1,
       "assists": null
