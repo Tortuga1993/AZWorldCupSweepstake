@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-22T16:18:24.896Z",
+  "lastUpdated": "2026-06-22T22:28:20.681Z",
   "ownGoals": [
     {
       "minute": 7,
@@ -152,7 +152,7 @@
   ],
   "yellowCards": {
     "target": 100,
-    "current": 95,
+    "current": 96,
     "leader": null,
     "leaderTeam": null,
     "leaderMatch": null
