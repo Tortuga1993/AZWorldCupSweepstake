@@ -1,8 +1,14 @@
 {
-  "updated": "2026-06-22T15:59:28.239Z",
+  "updated": "2026-06-22T22:26:33.166Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
+    {
+      "player": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 5,
+      "assists": null
+    },
     {
       "player": "Deniz Undav",
       "team": "Germany",
@@ -10,8 +16,8 @@
       "assists": 2
     },
     {
-      "player": "Lionel Messi",
-      "team": "Argentina",
+      "player": "Kylian Mbappé",
+      "team": "France",
       "goals": 3,
       "assists": null
     },
@@ -72,12 +78,6 @@
     {
       "player": "Elijah Just",
       "team": "New Zealand",
-      "goals": 2,
-      "assists": null
-    },
-    {
-      "player": "Kylian Mbappé",
-      "team": "France",
       "goals": 2,
       "assists": null
     },

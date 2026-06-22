@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-22T15:59:27.941Z",
+  "updated": "2026-06-22T22:26:32.875Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -568,13 +568,13 @@
       "stage": "GROUP_STAGE",
       "group": "J",
       "utcDate": "2026-06-22T17:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 2,
       "home": "Argentina",
       "away": "Austria",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 2,
+      "awayScore": 0,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
@@ -582,13 +582,13 @@
       "stage": "GROUP_STAGE",
       "group": "I",
       "utcDate": "2026-06-22T21:00:00Z",
-      "status": "TIMED",
+      "status": "PAUSED",
       "matchday": 2,
       "home": "France",
       "away": "Iraq",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 1,
+      "awayScore": 0,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
