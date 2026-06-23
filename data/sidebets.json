@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-22T22:28:20.681Z",
+  "lastUpdated": "2026-06-23T10:48:48.198Z",
   "ownGoals": [
     {
       "minute": 7,
@@ -152,9 +152,9 @@
   ],
   "yellowCards": {
     "target": 100,
-    "current": 96,
-    "leader": null,
-    "leaderTeam": null,
-    "leaderMatch": null
+    "current": 102,
+    "leader": "H. Abu Dahab",
+    "leaderTeam": "Jordan",
+    "leaderMatch": "Jordan vs Algeria"
   }
 }
