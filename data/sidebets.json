@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-25T10:24:50.717Z",
+  "lastUpdated": "2026-06-25T17:34:14.025Z",
   "ownGoals": [
     {
       "minute": 7,
@@ -7,41 +7,6 @@
       "team": "USA",
       "match": "USA vs Paraguay",
       "date": "2026-06-13"
-    },
-    {
-      "minute": 10,
-      "player": "Bono",
-      "team": "Haiti",
-      "match": "Morocco vs Haiti",
-      "date": "2026-06-24"
-    },
-    {
-      "minute": 11,
-      "player": "C. Burgess",
-      "team": "USA",
-      "match": "USA vs Australia",
-      "date": "2026-06-19"
-    },
-    {
-      "minute": 34,
-      "player": "M. Abunada",
-      "team": "Bosnia & Herzegovina",
-      "match": "Bosnia & Herzegovina vs Qatar",
-      "date": "2026-06-24"
-    },
-    {
-      "minute": 49,
-      "player": "H. Tambakti",
-      "team": "Spain",
-      "match": "Spain vs Saudi Arabia",
-      "date": "2026-06-21"
-    },
-    {
-      "minute": 60,
-      "player": "A. Nematov",
-      "team": "Portugal",
-      "match": "Portugal vs Uzbekistan",
-      "date": "2026-06-23"
     },
     {
       "minute": 66,
@@ -81,25 +46,11 @@
       "date": "2026-06-18"
     },
     {
-      "minute": 45,
-      "player": "M. Almiron",
-      "team": "Paraguay",
-      "match": "Turkey vs Paraguay",
-      "date": "2026-06-20"
-    },
-    {
       "minute": 53,
       "player": "A. O. Madibo",
       "team": "Qatar",
       "match": "Canada vs Qatar",
       "date": "2026-06-18"
-    },
-    {
-      "minute": 66,
-      "player": "N. Ngoy",
-      "team": "Belgium",
-      "match": "Belgium vs Iran",
-      "date": "2026-06-21"
     },
     {
       "minute": 80,
@@ -129,18 +80,6 @@
       "date": "2026-06-18"
     },
     {
-      "goals": 5,
-      "team": "Sweden",
-      "match": "Netherlands vs Sweden",
-      "date": "2026-06-20"
-    },
-    {
-      "goals": 5,
-      "team": "Haiti",
-      "match": "Morocco vs Haiti",
-      "date": "2026-06-24"
-    },
-    {
       "goals": 4,
       "team": "Croatia",
       "match": "England vs Croatia",
@@ -153,29 +92,41 @@
       "date": "2026-06-18"
     },
     {
-      "goals": 4,
-      "team": "Tunisia",
-      "match": "Tunisia vs Japan",
-      "date": "2026-06-21"
-    },
-    {
-      "goals": 4,
-      "team": "Uzbekistan",
-      "match": "Portugal vs Uzbekistan",
-      "date": "2026-06-23"
-    },
-    {
       "goals": 3,
       "team": "Paraguay",
       "match": "USA vs Paraguay",
       "date": "2026-06-13"
+    },
+    {
+      "goals": 3,
+      "team": "Iraq",
+      "match": "Iraq vs Norway",
+      "date": "2026-06-16"
+    },
+    {
+      "goals": 3,
+      "team": "Senegal",
+      "match": "France vs Senegal",
+      "date": "2026-06-16"
+    },
+    {
+      "goals": 3,
+      "team": "Algeria",
+      "match": "Argentina vs Algeria",
+      "date": "2026-06-17"
+    },
+    {
+      "goals": 3,
+      "team": "Uzbekistan",
+      "match": "Uzbekistan vs Colombia",
+      "date": "2026-06-18"
     }
   ],
   "yellowCards": {
     "target": 100,
-    "current": 125,
-    "leader": "E. Alvarez",
-    "leaderTeam": "Mexico",
-    "leaderMatch": "Czech Republic vs Mexico"
+    "current": 57,
+    "leader": null,
+    "leaderTeam": null,
+    "leaderMatch": null
   }
 }
