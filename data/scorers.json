@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-24T22:02:58.948Z",
+  "updated": "2026-06-25T10:20:51.831Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
@@ -8,6 +8,12 @@
       "team": "Argentina",
       "goals": 5,
       "assists": null
+    },
+    {
+      "player": "Vinicius Junior",
+      "team": "Brazil",
+      "goals": 4,
+      "assists": 1
     },
     {
       "player": "Kylian Mbappé",
@@ -19,6 +25,12 @@
       "player": "Erling Haaland",
       "team": "Norway",
       "goals": 4,
+      "assists": null
+    },
+    {
+      "player": "Ismael Saibari",
+      "team": "Morocco",
+      "goals": 3,
       "assists": null
     },
     {
@@ -40,6 +52,18 @@
       "assists": null
     },
     {
+      "player": "Matheus Cunha",
+      "team": "Brazil",
+      "goals": 3,
+      "assists": null
+    },
+    {
+      "player": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 2,
+      "assists": null
+    },
+    {
       "player": "Cyle Larin",
       "team": "Canada",
       "goals": 2,
@@ -50,18 +74,6 @@
       "team": "United States",
       "goals": 2,
       "assists": null
-    },
-    {
-      "player": "Ismael Saibari",
-      "team": "Morocco",
-      "goals": 2,
-      "assists": null
-    },
-    {
-      "player": "Vinicius Junior",
-      "team": "Brazil",
-      "goals": 2,
-      "assists": 1
     },
     {
       "player": "Kai Havertz",
@@ -124,12 +136,6 @@
       "assists": null
     },
     {
-      "player": "Matheus Cunha",
-      "team": "Brazil",
-      "goals": 2,
-      "assists": null
-    },
-    {
       "player": "Brian Brobbey",
       "team": "Netherlands",
       "goals": 2,
@@ -163,12 +169,6 @@
       "player": "Cristiano Ronaldo",
       "team": "Portugal",
       "goals": 2,
-      "assists": null
-    },
-    {
-      "player": "Julián Quiñones",
-      "team": "Mexico",
-      "goals": 1,
       "assists": null
     },
     {
