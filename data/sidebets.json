@@ -1,94 +1,11 @@
 {
-  "lastUpdated": "2026-06-26T17:22:10.663Z",
-  "ownGoals": [
-    {
-      "minute": 7,
-      "player": "D. Bobadilla",
-      "team": "USA",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "minute": 66,
-      "player": "M. Hany",
-      "team": "Belgium",
-      "match": "Belgium vs Egypt",
-      "date": "2026-06-15"
-    },
-    {
-      "minute": 90,
-      "player": "A. Hussein",
-      "team": "Norway",
-      "match": "Iraq vs Norway",
-      "date": "2026-06-16"
-    }
-  ],
+  "lastUpdated": "2026-06-26T21:51:08.705Z",
+  "ownGoals": [],
   "redCards": [],
-  "mostConceded": [
-    {
-      "goals": 7,
-      "team": "Curaçao",
-      "match": "Germany vs Curaçao",
-      "date": "2026-06-14"
-    },
-    {
-      "goals": 5,
-      "team": "Tunisia",
-      "match": "Sweden vs Tunisia",
-      "date": "2026-06-15"
-    },
-    {
-      "goals": 4,
-      "team": "Croatia",
-      "match": "England vs Croatia",
-      "date": "2026-06-17"
-    },
-    {
-      "goals": 3,
-      "team": "Paraguay",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 3,
-      "team": "Iraq",
-      "match": "Iraq vs Norway",
-      "date": "2026-06-16"
-    },
-    {
-      "goals": 3,
-      "team": "Senegal",
-      "match": "France vs Senegal",
-      "date": "2026-06-16"
-    },
-    {
-      "goals": 2,
-      "team": "Czech Republic",
-      "match": "South Korea vs Czech Republic",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 2,
-      "team": "USA",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 2,
-      "team": "Netherlands",
-      "match": "Netherlands vs Japan",
-      "date": "2026-06-14"
-    },
-    {
-      "goals": 2,
-      "team": "Japan",
-      "match": "Netherlands vs Japan",
-      "date": "2026-06-14"
-    }
-  ],
+  "mostConceded": [],
   "yellowCards": {
     "target": 100,
-    "current": 46,
+    "current": 0,
     "leader": null,
     "leaderTeam": null,
     "leaderMatch": null
