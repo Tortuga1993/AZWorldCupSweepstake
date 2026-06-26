@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-25T22:57:50.442Z",
+  "updated": "2026-06-26T10:37:30.215Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
@@ -54,6 +54,12 @@
     {
       "player": "Matheus Cunha",
       "team": "Brazil",
+      "goals": 3,
+      "assists": null
+    },
+    {
+      "player": "Brian Brobbey",
+      "team": "Netherlands",
       "goals": 3,
       "assists": null
     },
@@ -136,16 +142,16 @@
       "assists": null
     },
     {
-      "player": "Brian Brobbey",
-      "team": "Netherlands",
-      "goals": 2,
-      "assists": null
-    },
-    {
       "player": "Cody Gakpo",
       "team": "Netherlands",
       "goals": 2,
       "assists": 1
+    },
+    {
+      "player": "Anthony Elanga",
+      "team": "Sweden",
+      "goals": 2,
+      "assists": null
     },
     {
       "player": "Ayase Ueda",
@@ -175,12 +181,6 @@
       "player": "Nicolas Pépé",
       "team": "Ivory Coast",
       "goals": 2,
-      "assists": null
-    },
-    {
-      "player": "Raúl Jiménez",
-      "team": "Mexico",
-      "goals": 1,
       "assists": null
     }
   ]
