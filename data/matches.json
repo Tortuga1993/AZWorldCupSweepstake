@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-27T12:17:45.172Z",
+  "updated": "2026-06-27T16:19:44.245Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -848,13 +848,13 @@
       "stage": "GROUP_STAGE",
       "group": "I",
       "utcDate": "2026-06-26T19:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 3,
       "home": "Norway",
       "away": "France",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 1,
+      "awayScore": 4,
+      "winner": "AWAY_TEAM",
       "odds": null
     },
     {
@@ -862,13 +862,13 @@
       "stage": "GROUP_STAGE",
       "group": "I",
       "utcDate": "2026-06-26T19:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": 3,
       "home": "Senegal",
       "away": "Iraq",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 5,
+      "awayScore": 0,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
@@ -923,8 +923,8 @@
       "home": "Egypt",
       "away": "Iran",
       "homeScore": 1,
-      "awayScore": 2,
-      "winner": "AWAY_TEAM",
+      "awayScore": 1,
+      "winner": "DRAW",
       "odds": null
     },
     {
@@ -1074,7 +1074,7 @@
       "utcDate": "2026-06-30T17:00:00Z",
       "status": "TIMED",
       "matchday": null,
-      "home": null,
+      "home": "Ivory Coast",
       "away": null,
       "homeScore": null,
       "awayScore": null,
