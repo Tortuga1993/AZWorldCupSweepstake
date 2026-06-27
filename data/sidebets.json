@@ -1,87 +1,11 @@
 {
-  "lastUpdated": "2026-06-27T12:55:51.605Z",
-  "ownGoals": [
-    {
-      "minute": 7,
-      "player": "D. Bobadilla",
-      "team": "USA",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "minute": 66,
-      "player": "M. Hany",
-      "team": "Belgium",
-      "match": "Belgium vs Egypt",
-      "date": "2026-06-15"
-    }
-  ],
+  "lastUpdated": "2026-06-27T16:47:42.405Z",
+  "ownGoals": [],
   "redCards": [],
-  "mostConceded": [
-    {
-      "goals": 7,
-      "team": "Curaçao",
-      "match": "Germany vs Curaçao",
-      "date": "2026-06-14"
-    },
-    {
-      "goals": 5,
-      "team": "Tunisia",
-      "match": "Sweden vs Tunisia",
-      "date": "2026-06-15"
-    },
-    {
-      "goals": 3,
-      "team": "Paraguay",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 2,
-      "team": "Czech Republic",
-      "match": "South Korea vs Czech Republic",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 2,
-      "team": "USA",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 2,
-      "team": "Netherlands",
-      "match": "Netherlands vs Japan",
-      "date": "2026-06-14"
-    },
-    {
-      "goals": 2,
-      "team": "Japan",
-      "match": "Netherlands vs Japan",
-      "date": "2026-06-14"
-    },
-    {
-      "goals": 2,
-      "team": "Turkey",
-      "match": "Australia vs Turkey",
-      "date": "2026-06-14"
-    },
-    {
-      "goals": 2,
-      "team": "Belgium",
-      "match": "Belgium vs Egypt",
-      "date": "2026-06-15"
-    },
-    {
-      "goals": 1,
-      "team": "Canada",
-      "match": "Canada vs Bosnia & Herzegovina",
-      "date": "2026-06-12"
-    }
-  ],
+  "mostConceded": [],
   "yellowCards": {
     "target": 100,
-    "current": 37,
+    "current": 0,
     "leader": null,
     "leaderTeam": null,
     "leaderMatch": null
