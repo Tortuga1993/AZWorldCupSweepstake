@@ -1,12 +1,12 @@
 {
-  "updated": "2026-06-28T00:15:43.777Z",
+  "updated": "2026-06-28T10:15:47.538Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
     {
       "player": "Lionel Messi",
       "team": "Argentina",
-      "goals": 5,
+      "goals": 6,
       "assists": null
     },
     {
@@ -48,6 +48,12 @@
     {
       "player": "Elijah Just",
       "team": "New Zealand",
+      "goals": 3,
+      "assists": null
+    },
+    {
+      "player": "Yoane Wissa",
+      "team": "Congo DR",
       "goals": 3,
       "assists": null
     },
@@ -142,6 +148,12 @@
       "assists": 1
     },
     {
+      "player": "Marko Arnautovic",
+      "team": "Austria",
+      "goals": 2,
+      "assists": null
+    },
+    {
       "player": "Jude Bellingham",
       "team": "England",
       "goals": 2,
@@ -168,18 +180,6 @@
     {
       "player": "Cody Gakpo",
       "team": "Netherlands",
-      "goals": 2,
-      "assists": 1
-    },
-    {
-      "player": "Anthony Elanga",
-      "team": "Sweden",
-      "goals": 2,
-      "assists": null
-    },
-    {
-      "player": "Ayase Ueda",
-      "team": "Japan",
       "goals": 2,
       "assists": 1
     }
