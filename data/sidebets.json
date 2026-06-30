@@ -1,60 +1,11 @@
 {
-  "lastUpdated": "2026-06-30T17:30:31.539Z",
+  "lastUpdated": "2026-06-30T22:53:09.554Z",
   "ownGoals": [],
   "redCards": [],
-  "mostConceded": [
-    {
-      "goals": 2,
-      "team": "Czech Republic",
-      "match": "South Korea vs Czech Republic",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 1,
-      "team": "Canada",
-      "match": "Canada vs Bosnia & Herzegovina",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 1,
-      "team": "Bosnia & Herzegovina",
-      "match": "Canada vs Bosnia & Herzegovina",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 1,
-      "team": "South Korea",
-      "match": "South Korea vs Czech Republic",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 1,
-      "team": "Brazil",
-      "match": "Brazil vs Morocco",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 1,
-      "team": "Morocco",
-      "match": "Brazil vs Morocco",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 1,
-      "team": "Qatar",
-      "match": "Qatar vs Switzerland",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 1,
-      "team": "Switzerland",
-      "match": "Qatar vs Switzerland",
-      "date": "2026-06-13"
-    }
-  ],
+  "mostConceded": [],
   "yellowCards": {
     "target": 100,
-    "current": 11,
+    "current": 0,
     "leader": null,
     "leaderTeam": null,
     "leaderMatch": null
