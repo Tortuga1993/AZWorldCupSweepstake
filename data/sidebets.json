@@ -1,82 +1,202 @@
 {
-  "lastUpdated": "2026-06-29T21:10:09.329Z",
+  "lastUpdated": "2026-06-30T10:36:46.028Z",
   "ownGoals": [
+    {
+      "minute": 3,
+      "player": "Ellyes Skhiri",
+      "team": "Netherlands",
+      "match": "Tunisia vs Netherlands",
+      "date": "2026-06-25"
+    },
     {
       "minute": 7,
       "player": "D. Bobadilla",
       "team": "USA",
       "match": "USA vs Paraguay",
       "date": "2026-06-13"
+    },
+    {
+      "minute": 10,
+      "player": "Bono",
+      "team": "Haiti",
+      "match": "Morocco vs Haiti",
+      "date": "2026-06-24"
+    },
+    {
+      "minute": 11,
+      "player": "C. Burgess",
+      "team": "USA",
+      "match": "USA vs Australia",
+      "date": "2026-06-19"
+    },
+    {
+      "minute": 34,
+      "player": "M. Abunada",
+      "team": "Bosnia & Herzegovina",
+      "match": "Bosnia & Herzegovina vs Qatar",
+      "date": "2026-06-24"
+    },
+    {
+      "minute": 49,
+      "player": "H. Tambakti",
+      "team": "Spain",
+      "match": "Spain vs Saudi Arabia",
+      "date": "2026-06-21"
+    },
+    {
+      "minute": 60,
+      "player": "A. Nematov",
+      "team": "Portugal",
+      "match": "Portugal vs Uzbekistan",
+      "date": "2026-06-23"
+    },
+    {
+      "minute": 66,
+      "player": "M. Hany",
+      "team": "Belgium",
+      "match": "Belgium vs Egypt",
+      "date": "2026-06-15"
+    },
+    {
+      "minute": 75,
+      "player": "M. Al Mannai",
+      "team": "Canada",
+      "match": "Canada vs Qatar",
+      "date": "2026-06-18"
+    },
+    {
+      "minute": 76,
+      "player": "Y. Al Arab",
+      "team": "Austria",
+      "match": "Austria vs Jordan",
+      "date": "2026-06-17"
+    },
+    {
+      "minute": 90,
+      "player": "A. Hussein",
+      "team": "Norway",
+      "match": "Iraq vs Norway",
+      "date": "2026-06-16"
     }
   ],
-  "redCards": [],
+  "redCards": [
+    {
+      "minute": 13,
+      "player": "R. Sulaka",
+      "team": "Iraq",
+      "match": "Senegal vs Iraq",
+      "date": "2026-06-26"
+    },
+    {
+      "minute": 33,
+      "player": "H. Al Amin",
+      "team": "Qatar",
+      "match": "Canada vs Qatar",
+      "date": "2026-06-18"
+    },
+    {
+      "minute": 45,
+      "player": "M. Almiron",
+      "team": "Paraguay",
+      "match": "Turkey vs Paraguay",
+      "date": "2026-06-20"
+    },
+    {
+      "minute": 53,
+      "player": "A. O. Madibo",
+      "team": "Qatar",
+      "match": "Canada vs Qatar",
+      "date": "2026-06-18"
+    },
+    {
+      "minute": 66,
+      "player": "N. Ngoy",
+      "team": "Belgium",
+      "match": "Belgium vs Iran",
+      "date": "2026-06-21"
+    },
+    {
+      "minute": 80,
+      "player": "T. Muharemovic",
+      "team": "Bosnia & Herzegovina",
+      "match": "Switzerland vs Bosnia & Herzegovina",
+      "date": "2026-06-18"
+    },
+    {
+      "minute": 90,
+      "player": "A. Canobbio",
+      "team": "Uruguay",
+      "match": "Uruguay vs Spain",
+      "date": "2026-06-27"
+    }
+  ],
   "mostConceded": [
     {
-      "goals": 3,
-      "team": "Paraguay",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 2,
-      "team": "Czech Republic",
-      "match": "South Korea vs Czech Republic",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 2,
-      "team": "USA",
-      "match": "USA vs Paraguay",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 2,
-      "team": "Netherlands",
-      "match": "Netherlands vs Japan",
+      "goals": 7,
+      "team": "Curaçao",
+      "match": "Germany vs Curaçao",
       "date": "2026-06-14"
     },
     {
-      "goals": 2,
-      "team": "Japan",
-      "match": "Netherlands vs Japan",
-      "date": "2026-06-14"
+      "goals": 5,
+      "team": "Tunisia",
+      "match": "Sweden vs Tunisia",
+      "date": "2026-06-15"
     },
     {
-      "goals": 1,
-      "team": "Canada",
-      "match": "Canada vs Bosnia & Herzegovina",
-      "date": "2026-06-12"
+      "goals": 5,
+      "team": "Qatar",
+      "match": "Canada vs Qatar",
+      "date": "2026-06-18"
     },
     {
-      "goals": 1,
+      "goals": 5,
+      "team": "Sweden",
+      "match": "Netherlands vs Sweden",
+      "date": "2026-06-20"
+    },
+    {
+      "goals": 5,
+      "team": "Haiti",
+      "match": "Morocco vs Haiti",
+      "date": "2026-06-24"
+    },
+    {
+      "goals": 5,
+      "team": "Iraq",
+      "match": "Senegal vs Iraq",
+      "date": "2026-06-26"
+    },
+    {
+      "goals": 5,
+      "team": "New Zealand",
+      "match": "New Zealand vs Belgium",
+      "date": "2026-06-27"
+    },
+    {
+      "goals": 5,
+      "team": "Germany",
+      "match": "Germany vs Paraguay",
+      "date": "2026-06-29"
+    },
+    {
+      "goals": 4,
+      "team": "Croatia",
+      "match": "England vs Croatia",
+      "date": "2026-06-17"
+    },
+    {
+      "goals": 4,
       "team": "Bosnia & Herzegovina",
-      "match": "Canada vs Bosnia & Herzegovina",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 1,
-      "team": "South Korea",
-      "match": "South Korea vs Czech Republic",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 1,
-      "team": "Brazil",
-      "match": "Brazil vs Morocco",
-      "date": "2026-06-13"
-    },
-    {
-      "goals": 1,
-      "team": "Morocco",
-      "match": "Brazil vs Morocco",
-      "date": "2026-06-13"
+      "match": "Switzerland vs Bosnia & Herzegovina",
+      "date": "2026-06-18"
     }
   ],
   "yellowCards": {
     "target": 100,
-    "current": 24,
-    "leader": null,
-    "leaderTeam": null,
-    "leaderMatch": null
+    "current": 190,
+    "leader": "I. Diop",
+    "leaderTeam": "Morocco",
+    "leaderMatch": "Netherlands vs Morocco"
   }
 }
