@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-28T10:15:47.538Z",
+  "updated": "2026-06-30T08:46:32.340Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
@@ -36,6 +36,12 @@
     {
       "player": "Ismael Saibari",
       "team": "Morocco",
+      "goals": 3,
+      "assists": null
+    },
+    {
+      "player": "Kai Havertz",
+      "team": "Germany",
       "goals": 3,
       "assists": null
     },
@@ -88,6 +94,12 @@
       "assists": null
     },
     {
+      "player": "Cody Gakpo",
+      "team": "Netherlands",
+      "goals": 3,
+      "assists": 1
+    },
+    {
       "player": "Ismaïla Sarr",
       "team": "Senegal",
       "goals": 3,
@@ -112,16 +124,10 @@
       "assists": null
     },
     {
-      "player": "Kai Havertz",
-      "team": "Germany",
-      "goals": 2,
-      "assists": null
-    },
-    {
       "player": "Crysencio Summerville",
       "team": "Netherlands",
       "goals": 2,
-      "assists": 1
+      "assists": 2
     },
     {
       "player": "Daichi Kamada",
@@ -176,12 +182,6 @@
       "team": "Bosnia-Herzegovina",
       "goals": 2,
       "assists": null
-    },
-    {
-      "player": "Cody Gakpo",
-      "team": "Netherlands",
-      "goals": 2,
-      "assists": 1
     }
   ]
 }
