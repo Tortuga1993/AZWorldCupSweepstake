@@ -1,24 +1,11 @@
 {
-  "lastUpdated": "2026-07-01T18:23:14.410Z",
+  "lastUpdated": "2026-07-01T22:50:43.110Z",
   "ownGoals": [],
   "redCards": [],
-  "mostConceded": [
-    {
-      "goals": 1,
-      "team": "Canada",
-      "match": "Canada vs Bosnia & Herzegovina",
-      "date": "2026-06-12"
-    },
-    {
-      "goals": 1,
-      "team": "Bosnia & Herzegovina",
-      "match": "Canada vs Bosnia & Herzegovina",
-      "date": "2026-06-12"
-    }
-  ],
+  "mostConceded": [],
   "yellowCards": {
     "target": 100,
-    "current": 5,
+    "current": 0,
     "leader": null,
     "leaderTeam": null,
     "leaderMatch": null
