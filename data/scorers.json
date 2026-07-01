@@ -1,19 +1,19 @@
 {
-  "updated": "2026-06-30T22:02:06.858Z",
+  "updated": "2026-07-01T10:56:26.522Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
+    {
+      "player": "Kylian Mbappé",
+      "team": "France",
+      "goals": 6,
+      "assists": 2
+    },
     {
       "player": "Lionel Messi",
       "team": "Argentina",
       "goals": 6,
       "assists": null
-    },
-    {
-      "player": "Kylian Mbappé",
-      "team": "France",
-      "goals": 5,
-      "assists": 2
     },
     {
       "player": "Erling Haaland",
@@ -32,6 +32,12 @@
       "team": "France",
       "goals": 4,
       "assists": 2
+    },
+    {
+      "player": "Julián Quiñones",
+      "team": "Mexico",
+      "goals": 3,
+      "assists": 1
     },
     {
       "player": "Ismael Saibari",
@@ -106,7 +112,7 @@
       "assists": 1
     },
     {
-      "player": "Julián Quiñones",
+      "player": "Raúl Jiménez",
       "team": "Mexico",
       "goals": 2,
       "assists": null
@@ -160,6 +166,12 @@
       "assists": 1
     },
     {
+      "player": "Bradley Barcola",
+      "team": "France",
+      "goals": 2,
+      "assists": 1
+    },
+    {
       "player": "Marko Arnautovic",
       "team": "Austria",
       "goals": 2,
@@ -168,18 +180,6 @@
     {
       "player": "Jude Bellingham",
       "team": "England",
-      "goals": 2,
-      "assists": 1
-    },
-    {
-      "player": "Daniel Muñoz",
-      "team": "Colombia",
-      "goals": 2,
-      "assists": null
-    },
-    {
-      "player": "Ruben Vargas",
-      "team": "Switzerland",
       "goals": 2,
       "assists": 1
     }
