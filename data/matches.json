@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-01T18:19:57.853Z",
+  "updated": "2026-07-01T22:50:19.831Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -1128,13 +1128,13 @@
       "stage": "LAST_32",
       "group": null,
       "utcDate": "2026-07-01T20:00:00Z",
-      "status": "TIMED",
+      "status": "PAUSED",
       "matchday": null,
       "home": "Belgium",
       "away": "Senegal",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 3,
+      "awayScore": 2,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
