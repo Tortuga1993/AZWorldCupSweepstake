@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-02T20:43:58.634Z",
+  "updated": "2026-07-03T08:37:20.754Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
@@ -30,6 +30,12 @@
     {
       "player": "Vinicius Junior",
       "team": "Brazil",
+      "goals": 4,
+      "assists": 1
+    },
+    {
+      "player": "Mikel Oyarzabal",
+      "team": "Spain",
       "goals": 4,
       "assists": 1
     },
@@ -91,7 +97,7 @@
       "player": "Johan Manzambi",
       "team": "Switzerland",
       "goals": 3,
-      "assists": 1
+      "assists": 2
     },
     {
       "player": "Jonathan David",
@@ -118,10 +124,10 @@
       "assists": 1
     },
     {
-      "player": "Mikel Oyarzabal",
-      "team": "Spain",
+      "player": "Cristiano Ronaldo",
+      "team": "Portugal",
       "goals": 3,
-      "assists": 1
+      "assists": null
     },
     {
       "player": "Raúl Jiménez",
@@ -134,6 +140,12 @@
       "team": "Canada",
       "goals": 2,
       "assists": null
+    },
+    {
+      "player": "Breel Embolo",
+      "team": "Switzerland",
+      "goals": 2,
+      "assists": 2
     },
     {
       "player": "Crysencio Summerville",
@@ -170,18 +182,6 @@
       "team": "Iran",
       "goals": 2,
       "assists": 1
-    },
-    {
-      "player": "Bradley Barcola",
-      "team": "France",
-      "goals": 2,
-      "assists": 1
-    },
-    {
-      "player": "Marko Arnautovic",
-      "team": "Austria",
-      "goals": 2,
-      "assists": null
     }
   ]
 }

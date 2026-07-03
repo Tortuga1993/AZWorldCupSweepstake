@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-02T20:43:57.369Z",
+  "updated": "2026-07-03T08:37:18.085Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -1156,11 +1156,11 @@
       "stage": "LAST_32",
       "group": null,
       "utcDate": "2026-07-02T19:00:00Z",
-      "status": "IN_PLAY",
+      "status": "FINISHED",
       "matchday": null,
       "home": "Spain",
       "away": "Austria",
-      "homeScore": 2,
+      "homeScore": 3,
       "awayScore": 0,
       "winner": "HOME_TEAM",
       "odds": null
@@ -1170,13 +1170,13 @@
       "stage": "LAST_32",
       "group": null,
       "utcDate": "2026-07-02T23:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": null,
       "home": "Portugal",
       "away": "Croatia",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 2,
+      "awayScore": 1,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
@@ -1184,13 +1184,13 @@
       "stage": "LAST_32",
       "group": null,
       "utcDate": "2026-07-03T03:00:00Z",
-      "status": "TIMED",
+      "status": "FINISHED",
       "matchday": null,
       "home": "Switzerland",
       "away": "Algeria",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 2,
+      "awayScore": 0,
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
