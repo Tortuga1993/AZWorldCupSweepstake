@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-03T22:39:41.948Z",
+  "updated": "2026-07-03T23:41:13.228Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -1217,8 +1217,8 @@
       "home": "Argentina",
       "away": "Cape Verde Islands",
       "homeScore": 1,
-      "awayScore": 0,
-      "winner": "HOME_TEAM",
+      "awayScore": 1,
+      "winner": "DRAW",
       "odds": null
     },
     {
