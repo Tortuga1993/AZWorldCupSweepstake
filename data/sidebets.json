@@ -1,11 +1,109 @@
 {
-  "lastUpdated": "2026-07-04T22:32:27.067Z",
-  "ownGoals": [],
-  "redCards": [],
-  "mostConceded": [],
+  "lastUpdated": "2026-07-05T00:00:43.489Z",
+  "ownGoals": [
+    {
+      "minute": 55,
+      "player": "M. Hany",
+      "team": "Australia",
+      "match": "Australia vs Egypt",
+      "date": "2026-07-03"
+    },
+    {
+      "minute": 111,
+      "player": "D. Borges",
+      "team": "Argentina",
+      "match": "Argentina vs Cape Verde",
+      "date": "2026-07-03"
+    }
+  ],
+  "redCards": [
+    {
+      "minute": 64,
+      "player": "F. Balogun",
+      "team": "USA",
+      "match": "USA vs Bosnia & Herzegovina",
+      "date": "2026-07-02"
+    },
+    {
+      "minute": 90,
+      "player": "A. Canobbio",
+      "team": "Uruguay",
+      "match": "Uruguay vs Spain",
+      "date": "2026-06-27"
+    },
+    {
+      "minute": 90,
+      "player": "P. Hincapie",
+      "team": "Ecuador",
+      "match": "Mexico vs Ecuador",
+      "date": "2026-07-01"
+    }
+  ],
+  "mostConceded": [
+    {
+      "goals": 6,
+      "team": "Australia",
+      "match": "Australia vs Egypt",
+      "date": "2026-07-03"
+    },
+    {
+      "goals": 5,
+      "team": "New Zealand",
+      "match": "New Zealand vs Belgium",
+      "date": "2026-06-27"
+    },
+    {
+      "goals": 5,
+      "team": "Germany",
+      "match": "Germany vs Paraguay",
+      "date": "2026-06-29"
+    },
+    {
+      "goals": 4,
+      "team": "Paraguay",
+      "match": "Germany vs Paraguay",
+      "date": "2026-06-29"
+    },
+    {
+      "goals": 4,
+      "team": "Netherlands",
+      "match": "Netherlands vs Morocco",
+      "date": "2026-06-30"
+    },
+    {
+      "goals": 3,
+      "team": "Uzbekistan",
+      "match": "Congo DR vs Uzbekistan",
+      "date": "2026-06-27"
+    },
+    {
+      "goals": 3,
+      "team": "Algeria",
+      "match": "Algeria vs Austria",
+      "date": "2026-06-28"
+    },
+    {
+      "goals": 3,
+      "team": "Austria",
+      "match": "Algeria vs Austria",
+      "date": "2026-06-28"
+    },
+    {
+      "goals": 3,
+      "team": "Jordan",
+      "match": "Jordan vs Argentina",
+      "date": "2026-06-28"
+    },
+    {
+      "goals": 3,
+      "team": "Sweden",
+      "match": "France vs Sweden",
+      "date": "2026-06-30"
+    }
+  ],
   "yellowCards": {
     "target": 100,
-    "current": 0,
+    "current": 83,
     "leader": null,
     "leaderTeam": null,
     "leaderMatch": null
