@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-04T22:41:16.181Z",
+  "updated": "2026-07-05T22:14:48.573Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
@@ -10,15 +10,15 @@
       "assists": 2
     },
     {
-      "player": "Lionel Messi",
-      "team": "Argentina",
+      "player": "Erling Haaland",
+      "team": "Norway",
       "goals": 7,
       "assists": null
     },
     {
-      "player": "Erling Haaland",
-      "team": "Norway",
-      "goals": 5,
+      "player": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 7,
       "assists": null
     },
     {
