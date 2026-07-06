@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-05T22:14:48.351Z",
+  "updated": "2026-07-06T01:16:05.657Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -1281,14 +1281,14 @@
       "id": 537378,
       "stage": "LAST_16",
       "group": null,
-      "utcDate": "2026-07-06T00:00:00Z",
-      "status": "TIMED",
+      "utcDate": "2026-07-06T01:00:00Z",
+      "status": "IN_PLAY",
       "matchday": null,
       "home": "Mexico",
       "away": "England",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 0,
+      "awayScore": 0,
+      "winner": "DRAW",
       "odds": null
     },
     {
