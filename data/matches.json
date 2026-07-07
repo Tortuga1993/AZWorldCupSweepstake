@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-06T21:53:45.840Z",
+  "updated": "2026-07-07T00:17:24.916Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -1310,13 +1310,13 @@
       "stage": "LAST_16",
       "group": null,
       "utcDate": "2026-07-07T00:00:00Z",
-      "status": "TIMED",
+      "status": "IN_PLAY",
       "matchday": null,
       "home": "United States",
       "away": "Belgium",
-      "homeScore": null,
-      "awayScore": null,
-      "winner": null,
+      "homeScore": 0,
+      "awayScore": 1,
+      "winner": "AWAY_TEAM",
       "odds": null
     },
     {
