@@ -1,8 +1,14 @@
 {
-  "updated": "2026-07-07T04:27:13.875Z",
+  "updated": "2026-07-07T20:09:16.867Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
+    {
+      "player": "Lionel Messi",
+      "team": "Argentina",
+      "goals": 8,
+      "assists": 1
+    },
     {
       "player": "Kylian Mbappé",
       "team": "France",
@@ -12,12 +18,6 @@
     {
       "player": "Erling Haaland",
       "team": "Norway",
-      "goals": 7,
-      "assists": null
-    },
-    {
-      "player": "Lionel Messi",
-      "team": "Argentina",
       "goals": 7,
       "assists": null
     },
