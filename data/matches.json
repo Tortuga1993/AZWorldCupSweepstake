@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-07T20:09:15.216Z",
+  "updated": "2026-07-07T22:42:16.256Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -1338,7 +1338,7 @@
       "stage": "LAST_16",
       "group": null,
       "utcDate": "2026-07-07T20:00:00Z",
-      "status": "IN_PLAY",
+      "status": "PAUSED",
       "matchday": null,
       "home": "Switzerland",
       "away": "Colombia",
