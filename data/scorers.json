@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-06T05:38:03.487Z",
+  "updated": "2026-07-07T04:27:13.875Z",
   "competition": "WC",
   "count": 30,
   "scorers": [
@@ -142,6 +142,12 @@
       "assists": null
     },
     {
+      "player": "Romelu Lukaku",
+      "team": "Belgium",
+      "goals": 3,
+      "assists": 1
+    },
+    {
       "player": "Cyle Larin",
       "team": "Canada",
       "goals": 2,
@@ -174,12 +180,6 @@
     {
       "player": "Yasin Ayari",
       "team": "Sweden",
-      "goals": 2,
-      "assists": null
-    },
-    {
-      "player": "Emam Ashour",
-      "team": "Egypt",
       "goals": 2,
       "assists": null
     }
