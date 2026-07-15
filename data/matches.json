@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-15T19:32:45.850Z",
+  "updated": "2026-07-15T20:37:27.170Z",
   "competition": "WC",
   "count": 104,
   "matches": [
@@ -1426,9 +1426,9 @@
       "matchday": null,
       "home": "England",
       "away": "Argentina",
-      "homeScore": 0,
+      "homeScore": 1,
       "awayScore": 0,
-      "winner": "DRAW",
+      "winner": "HOME_TEAM",
       "odds": null
     },
     {
